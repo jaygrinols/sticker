@@ -1,0 +1,46 @@
+{
+    "stickers": [
+        {
+            "title": "Watermelon Penguin",
+            "filename": "./products/individual/img/IMG_2402.JPG",
+            "price": "$4.99",
+            "about": "A penguin stuck in a watermelon."
+        },
+        {
+            "title": "Orange Penguin",
+            "filename": "./products/individual/img/IMG_2403.JPG",
+            "price": "$4.99",
+            "about": "A penguin stuck in a pile of oranges."
+        },
+        {
+            "title": "Banana Penguin",
+            "filename": "./products/individual/img/IMG_2404.JPG",
+            "price": "$4.99",
+            "about": "A penguin stuck in a banana."
+        },
+        {
+            "title": "Bear",
+            "filename": "./products/individual/img/IMG_2405.JPG",
+            "price": "$4.99",
+            "about": "A bear waving."
+        },
+        {
+            "title": "Mochi Bunny 1",
+            "filename": "./products/individual/img/IMG_2406.JPG",
+            "price": "$4.99",
+            "about": "A kashiwa mochi bunny."
+        },
+        {
+            "title": "Margarita Racoon",
+            "filename": "./products/individual/img/IMG_2407.JPG",
+            "price": "$4.99",
+            "about": "A racoon drinking margaritas."
+        },
+        {
+            "title": "Waterbowl Sloth",
+            "filename": "./products/individual/img/IMG_2409.JPG",
+            "price": "$4.99",
+            "about": "A sloth swimming in a waterbowl."
+        }
+    ]
+}

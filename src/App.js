@@ -25,9 +25,9 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
 import Shop from './Shop'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import ProductPage from './ProductPage';
 
-
-
+// TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
 function App() {
   const [open, setOpen] = React.useState(false);
 
@@ -38,6 +38,16 @@ function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   }
+
+  let productObjects = require("./productdata.json")["stickers"];
+  let productRoutes = productObjects.map((elem) => {
+    console.log(elem);
+    return (
+      <Route exact path={"/" + elem.title}>
+      <ProductPage product={elem}/>
+      </Route>
+      );
+  });
 
   let appbar = ( <AppBar class="TitleBar">
   <Toolbar>
@@ -88,8 +98,11 @@ let rights = (<p>© 2021 Sticker Shop All rights reserved. </p>);
         <Route exact path="/about">
             <p> About under construction </p>
         </Route>
+        {productRoutes}
         </Switch>
       </body>
+      
+      
       <div class='bottom'>
       <Box container>
       <img src="logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "125px"}}/>
