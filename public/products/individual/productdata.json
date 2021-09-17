@@ -1,0 +1,10 @@
+{
+    "stickers": [
+        {
+            "title": "A Sample Sticker",
+            "filename": "logo512.png",
+            "price": "4.99",
+            "about": "A description of this sticker."
+        }
+    ]
+}
