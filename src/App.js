@@ -27,10 +27,12 @@ import Shop from './Shop'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import ProductPage from './ProductPage';
 import Cart from './Cart';
+import Badge from '@mui/material/Badge';
 
 
 // TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
 // TODO: maybe add a stepper for checkout: https://mui.com/components/steppers/
+// TODO: badge for cart in corner: https://mui.com/components/badges/
 function App() {
   const [open, setOpen] = React.useState(false);
 
@@ -42,12 +44,19 @@ function App() {
     setOpen(false);
   }
 
+  const [cartItems, updateCartItems] = React.useState([]); //don't forget quantity! maybe redirect back to shop after adding to cart
+  const handleAddToCart = (product, number) => {
+    //TODO: handle logic where product already exists in cart... probably just replace the cart quantity to avoid going over the amount?
+    //TODO: type of cartItems is still a number???
+    let newCartItems = cartItems.concat([[product, number]]);
+    updateCartItems(newCartItems);
+  }
+
   let productObjects = require("./productdata.json")["stickers"];
   let productRoutes = productObjects.map((elem) => {
-    console.log(elem);
     return (
       <Route exact path={"/" + elem.title}>
-      <ProductPage product={elem}/>
+      <ProductPage product={elem} handleAddToCart={handleAddToCart}/>
       </Route>
       );
   });
@@ -64,8 +73,6 @@ function App() {
   </Toolbar>
 </AppBar>);
 let rights = (<p>© 2021 Sticker Shop All rights reserved. </p>);
-const [cartItems, updateCartItems] = React.useState([]); //don't forget quantity! maybe redirect back to shop after adding to cart
-
 
   return (
     <Router>
@@ -82,12 +89,12 @@ const [cartItems, updateCartItems] = React.useState([]); //don't forget quantity
       <div class="hello">
         <header>
         <img src="Banner_Logo.png" style={{position: "relative", width: "70%", margin: "auto"}}/>
-          <NavLink to="/cart"><ShoppingBasketIcon style={{position: "absolute", top: "3%", right: "3%", color: "#c7a2c4"}}/></NavLink>
+          <NavLink to="/cart" style={{position: "absolute", top: "3%", right: "3%", color: "#c7a2c4"}}><Badge color="secondary" badgeContent={cartItems.length}><ShoppingBasketIcon/></Badge></NavLink>
           <Toolbar style={{borderTop: "5px solid #f6ddf3", borderBottom: "5px solid #f6ddf3", width: "70%", margin: "auto"}}>
             <Stack direction="row" style={{margin: "auto", maxWidth: "100%"}} spacing={5}>
-            <NavLink to="/" style={{color: "gray", "text-decoration:": "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>home</Typography></NavLink>
-            <NavLink to="/shop" style={{color: "gray", "text-decoration:": "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>shop</Typography></NavLink>
-            <NavLink to="/about" style={{color: "gray", "text-decoration:": "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>about</Typography></NavLink>
+            <NavLink to="/" style={{color: "gray", "text-decoration": "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>home</Typography></NavLink>
+            <NavLink to="/shop" style={{color: "gray", "text-decoration": "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>shop</Typography></NavLink>
+            <NavLink to="/about" style={{color: "gray", "text-decoration": "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>about</Typography></NavLink>
             </Stack>
           </Toolbar>
         </header>
@@ -101,16 +108,15 @@ const [cartItems, updateCartItems] = React.useState([]); //don't forget quantity
             <Shop/>
         </Route>
         <Route exact path="/about">
-            <p> About under construction </p>
+            <p> About under construction maybe a sticker request form </p>
         </Route>
         <Route exact path="/cart">
-            <p> <Cart/> </p>
+            <p> <Cart cartItems={cartItems}/> </p>
         </Route>
         {productRoutes}
         
         </Switch>
       </body>
-      
       
       <div class='bottom'>
       <Box container>
