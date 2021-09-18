@@ -12,9 +12,7 @@ function Shop(props) {
     });
     return (
         <div>
-            <p>
-                Shop under construction... TODO toggle categories buttons (JUST fruit penguins, dinosaurs, etc.)
-            </p>
+            <br/>
             <Grid container spacing={3} style={{maxWidth: "80%", margin: "auto"}}>
                 {listItems}
             </Grid>

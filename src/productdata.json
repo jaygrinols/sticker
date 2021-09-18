@@ -41,6 +41,12 @@
             "filename": "./products/individual/img/IMG_2409.JPG",
             "price": "$4.99",
             "about": "A sloth swimming in a waterbowl."
+        },
+        {
+            "title": "Triceratops",
+            "filename": "./products/individual/img/IMG_2399.jpeg",
+            "price": "$4.99",
+            "about": "A triceratops."
         }
     ]
 }
