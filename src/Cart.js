@@ -2,6 +2,8 @@ import React from 'react';
 import Button from "@material-ui/core/Button";
 import Grid from '@material-ui/core/Grid';
 import CartItem from './CartItem';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 function Cart(props) {
     let cartItemsString = JSON.stringify(props.cartItems);
@@ -29,7 +31,8 @@ function Cart(props) {
             <CartItem/>
             <CartItem/>
             <p> Cart: {cartItemsString} </p>
-            <Button style={{backgroundColor: "pink", color: 'white'}}>Checkout</Button>
+            <Button style={{backgroundColor: "pink", color: 'white'}} startIcon={<ArrowBackIosIcon/>}>Continue shopping</Button>
+            <Button style={{backgroundColor: "pink", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Checkout</Button>
         </div>
     );
 }
