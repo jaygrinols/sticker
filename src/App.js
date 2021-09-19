@@ -46,10 +46,20 @@ function App() {
 
   const [cartItems, updateCartItems] = React.useState([]); //don't forget quantity! maybe redirect back to shop after adding to cart
   const handleAddToCart = (product, number) => {
-    //TODO: handle logic where product already exists in cart... probably just replace the cart quantity to avoid going over the amount?
-    //TODO: type of cartItems is still a number???
-    let newCartItems = cartItems.concat([[product, number]]);
-    updateCartItems(newCartItems);
+    let newItemAlreadyInCart = false;
+    for (const elem of cartItems) {
+      let productNameInCart = elem[0]["title"];
+      if (productNameInCart.valueOf() === product["title"].valueOf()) {
+        elem[1] = number;
+        updateCartItems(cartItems)
+        newItemAlreadyInCart = true;
+        break;
+      }
+    }
+    if (!newItemAlreadyInCart) {
+      let newCartItems = cartItems.concat([[product, number]]);
+      updateCartItems(newCartItems);
+    }
   }
 
   let productObjects = require("./productdata.json")["stickers"];
@@ -72,7 +82,7 @@ function App() {
     </Box>
   </Toolbar>
 </AppBar>);
-let rights = (<p>© 2021 Sticker Shop All rights reserved. </p>);
+let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 2021 Sticker Shop All rights reserved. </p>);
 
   return (
     <Router>
@@ -120,10 +130,17 @@ let rights = (<p>© 2021 Sticker Shop All rights reserved. </p>);
       
       <div class='bottom'>
       <Box container>
-      <img src="logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "125px"}}/>
+      <img src="logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "12%", minWidth: "90px"}}/>
       <SocialIcon url="https://www.instagram.com/pasgals.co/" style={{position: "fixed", right:"2%", bottom:"3%"}} network="instagram" />
       </Box>
       </div>
+      <footer>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        {rights}
+      </footer>
     </div>
     </Router>
   );

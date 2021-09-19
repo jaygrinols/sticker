@@ -33,6 +33,16 @@ function Home() { //IMPLEMENT TITLE BAR BELOW IMAGE DEMO material ui // SLIDE SH
               <img style={{width: "75%"}} src="/products/individual/img/IMG_2411.JPG"/>
             </Carousel>
           </Box>
+          <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
     );
 }
