@@ -211,7 +211,7 @@ let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 20
       
       <div class='bottom'>
       <Box container>
-      <img src="logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "12%", minWidth: "90px"}}/>
+      <img src="Logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "12%", minWidth: "90px"}}/>
       <SocialIcon url="https://www.instagram.com/pasgals.co/" style={{position: "fixed", right:"2%", bottom:"3%"}} network="instagram" />
       </Box>
       </div>
