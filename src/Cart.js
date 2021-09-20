@@ -6,7 +6,10 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { NavLink } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Backdrop } from '@material-ui/core';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 
 function Cart(props) {
     //TODO: Grey out checkout button if no items in cart
@@ -23,7 +26,14 @@ function Cart(props) {
     const handleRemoveFromCart = (title) => {
         props.handleRemoveFromCart(title);
     }
-    console.log(props.cartItems.length)
+
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleToggle = () => {
+      setOpen(!open);
+    };
 
     const cartItemsMapped = props.cartItems.map((elem) => {   // elem is [product, quantity]
         return (
@@ -39,7 +49,7 @@ function Cart(props) {
         }
         else {
             return (
-                <LoadingButton disabled={false} style={{backgroundColor: "pink", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Check-out</LoadingButton>
+                <LoadingButton onClick={handleToggle} disabled={false} style={{backgroundColor: "pink", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Check-out</LoadingButton>
             );
         }
     }
@@ -72,6 +82,13 @@ function Cart(props) {
                     {checkoutButton()}
                 </Grid>
             </Grid>
+            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
+                <IconButton style={{color: "white", position: "absolute", right: "0.5%", top: "0.5%"}} onClick={handleClose}>
+                    <CloseIcon size="large"/>
+                </IconButton>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+
         </div>
     );
 }

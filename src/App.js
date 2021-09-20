@@ -28,6 +28,7 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import ProductPage from './ProductPage';
 import Cart from './Cart';
 import Badge from '@mui/material/Badge';
+import CheckOut from './CheckOut';
 
 
 // TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
@@ -205,7 +206,6 @@ let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 20
             <p> <Cart cartItems={cartItems} cartItemsTotalPrice={cartItemsTotalPrice} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart}/> </p>
         </Route>
         {productRoutes}
-        
         </Switch>
       </body>
       
