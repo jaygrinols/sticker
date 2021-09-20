@@ -10,6 +10,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import { pink } from '@mui/material/colors';
 
 function Cart(props) {
     //TODO: Grey out checkout button if no items in cart
@@ -88,7 +89,6 @@ function Cart(props) {
                 </IconButton>
                 <CircularProgress color="inherit" />
             </Backdrop>
-
         </div>
     );
 }

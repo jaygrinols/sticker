@@ -28,7 +28,6 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import ProductPage from './ProductPage';
 import Cart from './Cart';
 import Badge from '@mui/material/Badge';
-import CheckOut from './CheckOut';
 
 
 // TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
