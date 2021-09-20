@@ -52,7 +52,7 @@ function ProductPage(props) {
                         <b>about: </b><span>{props.product.about}</span>
                     </p>
                     <p style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>
-                        <b>dimensions: </b>3.306 x 2.869 in.
+                        <b>dimensions: </b>{props.product.dimensions}
                     </p>
                     <p style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>
                         <b>material: </b>printed on vinyl sticker paper, laminated, glossy finish and water resistant.

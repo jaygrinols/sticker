@@ -13,11 +13,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { pink } from '@mui/material/colors';
 
 function Cart(props) {
-    //TODO: Grey out checkout button if no items in cart
-    //TODO: persist state of cart? 
+    //TODO: persist cartitems and total price?? 
     //https://joaoforja.com/blog/how-to-persist-state-after-a-page-refresh-in-react-using-local-storage/
-    //TODO: Add removing from cart functionality
-    //TODO: map CartItems with each product from props.cartItems
+    //TODO: add stripe checkout on backdrop, keep loading then when stripe loads bring up credit card element with a material ui transition
     const handleIncreaseQuantity = (title) => {
         props.handleIncreaseQuantity(title);
     }

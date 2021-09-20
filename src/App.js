@@ -167,15 +167,6 @@ let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 20
   return (
     <Router>
     <div class="App">
-      <Drawer anchor='left' open={open} onClose={handleDrawerClose}>
-        <div>
-          <NavLink to="/" style={{color: "black", "text-decoration": "none"}}><MenuItem onClick={handleDrawerClose}> Home </MenuItem></NavLink>
-          <NavLink to="/shop" style={{color: "black", "text-decoration": "none"}}><MenuItem onClick={handleDrawerClose}> Shop </MenuItem></NavLink>
-          <MenuItem> Individual Stickers </MenuItem>
-          <MenuItem> Sticker Sheets </MenuItem>
-          <NavLink to="/about" style={{color: "black", "text-decoration": "none"}}><MenuItem onClick={handleDrawerClose}> About </MenuItem></NavLink>
-        </div>
-      </Drawer>
       <div class="hello">
         <header>
         <img src="Banner_Logo.png" style={{position: "relative", width: "70%", margin: "auto"}}/>
