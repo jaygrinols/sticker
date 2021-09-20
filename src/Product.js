@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import { NavLink } from 'react-router-dom'
 import './App.css'
 
-// Props: elem:sticker data object
+// Props: elem:sticker data object  
 function Product(props) {
     return (
         <NavLink to={"/" + props.name}>
