@@ -7,29 +7,37 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@mui/material/TextField';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
-function CartItem(props) {
-
+function CartItem(props) {  //props: product, quantity
+    const handleIncreaseQuantity = () => {
+        props.handleIncreaseQuantity(props.product.title);
+    };
+    const handleDecreaseQuantity = () => {
+        props.handleDecreaseQuantity(props.product.title);
+    };
+    const handleRemoveFromCart = () => {
+        props.handleRemoveFromCart(props.product.title);
+    };
     return (
         <div style={{backgroundColor: "white"}}>
             <Grid container direction="row">
                 <Grid item xs={4} style={{display: "flex", alignItems: "center", justifyContent: "center", fontFamily: 'Nanum Pen Script', fontSize: "125%"}}>
-                    <img src="./products/individual/img/IMG_2403.JPG" style={{minWidth: "40%", width: "40%"}}></img>
+                    <img src={props.product.filename} style={{minWidth: "40%", width: "40%"}}></img>
                 </Grid>
                 <Grid item xs={2} style={{display: "flex", alignItems: "center", justifyContent: "center", fontFamily: 'Nanum Pen Script', fontSize: "125%"}}>
-                    <p>$4.99</p>
+                    <p style={{fontFamily: "klee one", fontSize:"90%"}}>{props.product.price}</p>
                 </Grid>
                 <Grid item xs={6} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                    <TextField size="small" style={{width:"50px"}}/>
+                    <TextField size="small" style={{width:"50px"}} value={props.quantity}/>
                     <ButtonGroup orientation="vertical">
-                    <IconButton size="small">
+                    <IconButton size="small" onClick={handleIncreaseQuantity}>
                         <AddIcon style={{width:"50%", maxWidth: "50px", color: "#c7a2c4"}}/>
                     </IconButton>
-                    <IconButton size="small">
+                    <IconButton size="small" onClick={handleDecreaseQuantity}>
                         <RemoveIcon style={{width:"50%", maxWidth: "50px", color: "#c7a2c4"}}/>
                     </IconButton>
                     </ButtonGroup>
-                    <IconButton>
-                        <DeleteIcon style={{color: "#c7a2c4", backgroundColor: "white"}}/>
+                    <IconButton onClick={handleRemoveFromCart}>
+                        <DeleteIcon style={{color: "#c7a2c4"}}/>
                     </IconButton>
                 </Grid>
             </Grid>

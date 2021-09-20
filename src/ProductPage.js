@@ -45,13 +45,19 @@ function ProductPage(props) {
                 <Grid item style={{backgroundColor: "white", float: "left", width: "50%"}} lg={6} xs={12}>
                         <img src={props.product.filename} style={{paddingLeft: "2%", paddingRight: "2%", paddingTop: "5%", paddingBottom: "5%", maxWidth: "90%"}}/>                    
                 </Grid>
-                <Grid item style={{backgroundColor: "white", float: "right", width: "50%", fontFamily: 'Nanum Pen Script', paddingTop: "10%", fontSize: "200%"}} lg={6} xs={12}>
-                    <h1>{props.product.title}</h1>
-                    <h3>{props.product.price}</h3>
-                    <p>
-                        Description: {props.product.about}
+                <Grid item style={{display: "block", backgroundColor: "white", float: "right", width: "50%", fontFamily: 'Nanum Pen Script', paddingTop: "5%", paddingBottom: "5%", fontSize: "200%", paddingLeft: "5%", paddingRight: "5%"}} lg={6} xs={12}>
+                    <h1 style={{textAlign: "left"}}>{props.product.title}</h1>
+                    <h3 style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>{props.product.price}</h3>
+                    <p style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>
+                        <b>about: </b><span>{props.product.about}</span>
                     </p>
-                    <div style={{display: "inline-block"}}>
+                    <p style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>
+                        <b>dimensions: </b>3.306 x 2.869 in.
+                    </p>
+                    <p style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>
+                        <b>material: </b>printed on vinyl sticker paper, laminated, glossy finish and water resistant.
+                    </p>
+                    <div style={{display: "inline-block", paddingTop: "5%"}}>
                         <ButtonGroup>
                         <IconButton onClick={handleDecreaseCartValue} style={{height:"41px", color: "#c7a2c4"}}>
                             <RemoveIcon/>

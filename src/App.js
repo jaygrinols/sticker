@@ -43,24 +43,104 @@ function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   }
+  const maxCartValue = 99;
+  const minCartValue = 1;
+
+  const validCartValue = (number) => {  //warning: defined somewhere else as well TODO cleanup helper functions
+    return number >= minCartValue && number <= maxCartValue;
+};
+
+const calculateProductPrice = (elem) => { // [product, quantity]
+  let priceString = elem[0].price;
+  let price = elem[1] * Number(priceString.replace(/[^0-9.-]+/g,""));
+  return price;
+};
 
   const [cartItems, updateCartItems] = React.useState([]); //don't forget quantity! maybe redirect back to shop after adding to cart
+  const [cartItemsTotalPrice, updateCartItemsTotalPrice] = React.useState(0.0);
   const handleAddToCart = (product, number) => {
     let newItemAlreadyInCart = false;
-    for (const elem of cartItems) {
+    let newCartItems = cartItems.slice();
+    for (const elem of newCartItems) {
       let productNameInCart = elem[0]["title"];
       if (productNameInCart.valueOf() === product["title"].valueOf()) {
         elem[1] = number;
-        updateCartItems(cartItems)
+        updateCartItems(newCartItems);
         newItemAlreadyInCart = true;
         break;
       }
     }
     if (!newItemAlreadyInCart) {
-      let newCartItems = cartItems.concat([[product, number]]);
+      newCartItems = newCartItems.concat([[product, number]]);
       updateCartItems(newCartItems);
     }
+    let price = 0.0;
+    for (const elem of newCartItems) {
+      price += calculateProductPrice(elem);
+    }
+    price = Math.round(price * 100)/100;
+    updateCartItemsTotalPrice(price);
   }
+
+  const handleIncreaseQuantity = (title) => {
+    console.log("is the increase running")
+    let newCartItems = cartItems.slice();
+    for (let i = 0; i < newCartItems.length; i++) {
+      let elem = newCartItems[i];
+      if (elem[0].title.valueOf() === title.valueOf()) {
+        if (validCartValue(elem[1]+1)) {
+          elem[1]++;
+          newCartItems[i] = elem;
+          updateCartItems(newCartItems);
+        }
+        break;
+      }
+    }
+    let price = 0.0;
+    for (const elem of newCartItems) {
+      price += calculateProductPrice(elem);
+    }
+    price = Math.round(price * 100)/100;
+    updateCartItemsTotalPrice(price);
+
+  };
+  const handleDecreaseQuantity = (title) => {
+    let newCartItems = cartItems.slice();
+    for (let i = 0; i < newCartItems.length; i++) {
+      let elem = newCartItems[i];
+      if (elem[0].title.valueOf() === title.valueOf()) {
+        if (validCartValue(elem[1]-1)) {
+          elem[1]--;
+          newCartItems[i] = elem;
+          updateCartItems(newCartItems);
+        }
+        break;
+      } 
+    }
+    let price = 0.0;
+    for (const elem of newCartItems) {
+      price += calculateProductPrice(elem);
+    }
+    price = Math.round(price * 100)/100;
+    updateCartItemsTotalPrice(price);
+  };
+  const handleRemoveFromCart = (title) => {
+    let newCartItems = cartItems.slice();
+    for (let i = 0; i < newCartItems.length; i++) {
+      let elem = newCartItems[i];
+      if (elem[0].title.valueOf() === title.valueOf()) {
+        newCartItems.splice(i, 1);
+        updateCartItems(newCartItems);
+        break;
+      }
+    }
+    let price = 0.0;
+    for (const elem of newCartItems) {
+      price += calculateProductPrice(elem);
+    }
+    price = Math.round(price * 100)/100;
+    updateCartItemsTotalPrice(price);
+  };
 
   let productObjects = require("./productdata.json")["stickers"];
   let productRoutes = productObjects.map((elem) => {
@@ -82,7 +162,7 @@ function App() {
     </Box>
   </Toolbar>
 </AppBar>);
-let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 2021 Sticker Shop All rights reserved. </p>);
+let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 2021 Pasgals Co. All rights reserved. </p>);
 
   return (
     <Router>
@@ -118,10 +198,11 @@ let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 20
             <Shop/>
         </Route>
         <Route exact path="/about">
-            <p> About under construction maybe a sticker request form </p>
+            <p> About under construction </p>
+            <p> TODO: FAQ, restock times, actual about info, maybe a sticker request form</p>
         </Route>
         <Route exact path="/cart">
-            <p> <Cart cartItems={cartItems}/> </p>
+            <p> <Cart cartItems={cartItems} cartItemsTotalPrice={cartItemsTotalPrice} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart}/> </p>
         </Route>
         {productRoutes}
         
