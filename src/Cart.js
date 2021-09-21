@@ -10,7 +10,16 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
-import { pink } from '@mui/material/colors';
+
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+//TODO FOR PAYMENTS:
+//full payment code: 
+//https://stripe.com/docs/payments/integration-builder
+//https://sweetcode.io/deploying-express-node-js-backend-heroku/
+//https://blog.back4app.com/free-backend-app-hosting/
+//create a payment intent when pressing "checkout" button from cart? (not in backdrop)
+//request Full Name, phone number, email, mailbox number, card info
+
 
 function Cart(props) {
     //TODO: persist cartitems and total price?? 
@@ -53,6 +62,54 @@ function Cart(props) {
         }
     }
 
+    const CheckoutForm = () => {
+        const stripe = useStripe();
+        const elements = useElements();
+      
+        const handleSubmit = async (event) => {
+          // Block native form submission.
+          event.preventDefault();
+      
+          if (!stripe || !elements) {
+            // Stripe.js has not loaded yet. Make sure to disable
+            // form submission until Stripe.js has loaded.
+            return;
+          }
+      
+          // Get a reference to a mounted CardElement. Elements knows how
+          // to find your CardElement because there can only ever be one of
+          // each type of element.
+          const cardElement = elements.getElement(CardElement);
+      
+          // Use your card Element with other Stripe.js APIs
+          const {error, paymentMethod} = await stripe.createPaymentMethod({
+            type: 'card',
+            card: cardElement,
+          });
+      
+          if (error) {
+            console.log('[error]', error);
+          } else {
+            console.log('[PaymentMethod]', paymentMethod);
+          }
+        };
+
+        if (!stripe || !elements) {
+            return ((<CircularProgress color="inherit" />));
+        }
+        else {
+            return (
+                <form onSubmit={handleSubmit}>
+                  <CardElement />
+                  <button type="submit" disabled={!stripe}>
+                    Pay
+                  </button>
+                </form>
+              );
+        }
+      };
+      
+
     return (
         <div>
             <h1 style={{fontFamily: 'Nanum Pen Script', fontSize: "300%", paddingTop: "0px", paddingBottom: "0px"}}>check-out</h1>
@@ -85,7 +142,9 @@ function Cart(props) {
                 <IconButton style={{color: "white", position: "absolute", right: "0.5%", top: "0.5%"}} onClick={handleClose}>
                     <CloseIcon size="large"/>
                 </IconButton>
-                <CircularProgress color="inherit" />
+                <div style={{minWidth: "300px", width: "25%", backgroundColor: "#6772e5", color: "#fff", padding: "10px"}}>
+                    <CheckoutForm></CheckoutForm>
+                </div>
             </Backdrop>
         </div>
     );

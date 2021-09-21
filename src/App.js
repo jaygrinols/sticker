@@ -1,25 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
-import Drawer from '@material-ui/core/Drawer'
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar'
 import Stack from '@mui/material/Stack'
 import './App.css';
 import { Typography } from '@mui/material';
-import ImageList from '@material-ui/core/ImageList';
-import ImageListItem from '@material-ui/core/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Box from '@material-ui/core/Box'
-import Search from './Search'
 import { SocialIcon } from 'react-social-icons';
-import BottomNavigation from '@mui/material/BottomNavigation';
 import Home from './Home'
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
@@ -29,20 +14,16 @@ import ProductPage from './ProductPage';
 import Cart from './Cart';
 import Badge from '@mui/material/Badge';
 
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe('pk_test_51Jbi1qBylQ0iWaN2HysYfEyz9uueTWsrxDlrIcLIvd0AoXtKY2jOqRbnD0USPKvqy4bLgQjtkqYyAFKlIYqwte7A00VDCi4nI1');
+
 
 // TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
 // TODO: maybe add a stepper for checkout: https://mui.com/components/steppers/
 // TODO: badge for cart in corner: https://mui.com/components/badges/
 function App() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  }
   const maxCartValue = 99;
   const minCartValue = 1;
 
@@ -151,17 +132,6 @@ const calculateProductPrice = (elem) => { // [product, quantity]
       );
   });
 
-  let appbar = ( <AppBar class="TitleBar">
-  <Toolbar>
-    <IconButton class="MenuButton" variant="contained" onClick={handleDrawerOpen} onBackdropClick='true'>
-      <MenuIcon fontSize='large'/>
-    </IconButton>
-    <Typography variant="h6" sx={{paddingLeft: "20%"}}> Sticker Shop </Typography>
-    <Box sx={{paddingLeft: "10%"}}>
-      <Search/>
-    </Box>
-  </Toolbar>
-</AppBar>);
 let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 2021 Pasgals Co. All rights reserved. </p>);
 
   return (
@@ -169,7 +139,7 @@ let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 20
     <div class="App">
       <div class="hello">
         <header>
-        <img src="Banner_Logo.png" style={{position: "relative", width: "70%", margin: "auto"}}/>
+        <img alt="" src="Banner_Logo.png" style={{position: "relative", width: "70%", margin: "auto"}}/>
           <NavLink to="/cart" style={{position: "absolute", top: "3%", right: "3%", color: "#c7a2c4"}}><Badge color="secondary" badgeContent={cartItems.length}><ShoppingBasketIcon/></Badge></NavLink>
           <Toolbar style={{borderTop: "5px solid #f6ddf3", borderBottom: "5px solid #f6ddf3", width: "70%", margin: "auto"}}>
             <Stack direction="row" style={{margin: "auto", maxWidth: "100%"}} spacing={5}>
@@ -193,7 +163,9 @@ let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 20
             <p> TODO: FAQ, restock times, actual about info, maybe a sticker request form</p>
         </Route>
         <Route exact path="/cart">
-            <p> <Cart cartItems={cartItems} cartItemsTotalPrice={cartItemsTotalPrice} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart}/> </p>
+            <Elements stripe={stripePromise}>
+              <p> <Cart cartItems={cartItems} cartItemsTotalPrice={cartItemsTotalPrice} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart}/> </p>
+            </Elements>
         </Route>
         {productRoutes}
         </Switch>
@@ -201,7 +173,7 @@ let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 20
       
       <div class='bottom'>
       <Box container>
-      <img src="Logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "12%", minWidth: "90px"}}/>
+      <img alt="" src="Logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "12%", minWidth: "90px"}}/>
       <SocialIcon url="https://www.instagram.com/pasgals.co/" style={{position: "fixed", right:"2%", bottom:"3%"}} network="instagram" />
       </Box>
       </div>

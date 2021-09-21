@@ -21,7 +21,7 @@ function CartItem(props) {  //props: product, quantity
         <div style={{backgroundColor: "white"}}>
             <Grid container direction="row">
                 <Grid item xs={4} style={{display: "flex", alignItems: "center", justifyContent: "center", fontFamily: 'Nanum Pen Script', fontSize: "125%"}}>
-                    <img src={props.product.filename} style={{minWidth: "40%", width: "40%"}}></img>
+                    <img alt="" src={props.product.filename} style={{minWidth: "40%", width: "40%"}}></img>
                 </Grid>
                 <Grid item xs={2} style={{display: "flex", alignItems: "center", justifyContent: "center", fontFamily: 'Nanum Pen Script', fontSize: "125%"}}>
                     <p style={{fontFamily: "klee one", fontSize:"90%"}}>{props.product.price}</p>

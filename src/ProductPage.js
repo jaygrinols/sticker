@@ -6,11 +6,9 @@ import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
 import { NavLink } from 'react-router-dom';
-import Carousel from 'react-material-ui-carousel' //https://www.npmjs.com/package/react-material-ui-carousel
 
-
+//https://www.npmjs.com/package/react-material-ui-carousel
 
 // Props: elem: sticker data object
 //TODO: ADD a carousel, figure out how to not show arrows when only one item... might have to render the image without the carousel if only one image for the sticker
@@ -43,7 +41,7 @@ function ProductPage(props) {
         return (
             <Grid container direction="row" style={{margin: "auto", height: "100%", width: "100%", position: "relative", zIndex: 0, top: 0, overflowX: "hidden", paddingTop: "20px"}}>
                 <Grid item style={{backgroundColor: "white", float: "left", width: "50%"}} lg={6} xs={12}>
-                        <img src={props.product.filename} style={{paddingLeft: "2%", paddingRight: "2%", paddingTop: "5%", paddingBottom: "5%", maxWidth: "90%"}}/>                    
+                        <img alt="" src={props.product.filename} style={{paddingLeft: "2%", paddingRight: "2%", paddingTop: "5%", paddingBottom: "5%", maxWidth: "90%"}}/>                    
                 </Grid>
                 <Grid item style={{display: "block", backgroundColor: "white", float: "right", width: "50%", fontFamily: 'Nanum Pen Script', paddingTop: "5%", paddingBottom: "5%", fontSize: "200%", paddingLeft: "5%", paddingRight: "5%"}} lg={6} xs={12}>
                     <h1 style={{textAlign: "left"}}>{props.product.title}</h1>
