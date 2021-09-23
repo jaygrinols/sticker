@@ -20,8 +20,35 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 //create a payment intent when pressing "checkout" button from cart? (not in backdrop)
 //request Full Name, phone number, email, mailbox number, card info
 
+const CARD_OPTIONS = {
+  iconStyle: "solid",
+  style: {
+    base: {
+      iconColor: "white",
+      lineHeight: "20px",
+      color: "grey",
+      fontWeight: 500,
+      fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
+      fontSize: "16px",
+      fontSmoothing: "antialiased",
+      ":-webkit-autofill": {
+        color: "#fce883"
+      },
+      "::placeholder": {
+        color: "rgb(192, 192, 192)"
+      }
+    },
+    invalid: {
+      iconColor: "#ffc7ee",
+      color: "#ffc7ee"
+    }
+  }
+};
 
 function Cart(props) {
+  const stripe = useStripe();
+  const elements = useElements();
+
     //TODO: persist cartitems and total price?? 
     //https://joaoforja.com/blog/how-to-persist-state-after-a-page-refresh-in-react-using-local-storage/
     //TODO: add stripe checkout on backdrop, keep loading then when stripe loads bring up credit card element with a material ui transition
@@ -38,9 +65,11 @@ function Cart(props) {
     const [open, setOpen] = React.useState(false);
     const handleClose = () => {
       setOpen(false);
+      //TODO: Clear cart if payment was successful (payment state 2)
+      //setPaymentState(0);
     };
-    const handleToggle = () => {
-      setOpen(!open);
+    const handleOpen = () => {
+      setOpen(true);
     };
 
     const cartItemsMapped = props.cartItems.map((elem) => {   // elem is [product, quantity]
@@ -48,6 +77,37 @@ function Cart(props) {
                 <CartItem product={elem[0]} quantity={elem[1]} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart}/>
         );
     });
+
+    const calculateProductPrice = (elem) => { // [product, quantity]
+      let priceString = elem[0].price;
+      let price = elem[1] * Number(priceString.replace(/[^0-9.-]+/g,""));
+      return price;
+    };    
+    const calculatePriceOfCart = (cartItems) => {
+      let price = 0.0;
+      for (const elem of cartItems) {
+        price += calculateProductPrice(elem);
+      }
+      price = Math.round(price * 100)/100;
+      return price;
+    }
+
+    //UI STUFF ------------------------------------------------------------------------------------
+    /*
+    var orderComplete = function() {
+        setPaymentState(2);
+      };
+      // Show the customer the error from Stripe if their card fails to charge
+      var showError = function() {
+        setPaymentState(3);
+      };
+      // Show a spinner on payment submission
+      var loading = function() {
+        setPaymentState(1);
+      };*/
+            
+
+    //UI STUFF END --------------------------------------------------------------------------------
 
     const checkoutButton = () => {
         if (props.cartItems.length === 0) {
@@ -57,53 +117,153 @@ function Cart(props) {
         }
         else {
             return (
-                <LoadingButton onClick={handleToggle} disabled={false} style={{backgroundColor: "pink", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Check-out</LoadingButton>
+                <LoadingButton onClick={handleOpen} disabled={false} style={{backgroundColor: "pink", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Check-out</LoadingButton>
             );
         }
     }
 
-    const CheckoutForm = () => {
-        const stripe = useStripe();
-        const elements = useElements();
-      
-        const handleSubmit = async (event) => {
-          // Block native form submission.
-          event.preventDefault();
-      
-          if (!stripe || !elements) {
-            // Stripe.js has not loaded yet. Make sure to disable
-            // form submission until Stripe.js has loaded.
-            return;
-          }
-      
-          // Get a reference to a mounted CardElement. Elements knows how
-          // to find your CardElement because there can only ever be one of
-          // each type of element.
-          const cardElement = elements.getElement(CardElement);
-      
-          // Use your card Element with other Stripe.js APIs
-          const {error, paymentMethod} = await stripe.createPaymentMethod({
-            type: 'card',
-            card: cardElement,
-          });
-      
-          if (error) {
-            console.log('[error]', error);
-          } else {
-            console.log('[PaymentMethod]', paymentMethod);
-          }
-        };
+    const handleSubmit = async (event, setPaymentState) => {
+      console.log("HELLO DID IT SUBMIT")
+      // Block native form submission.
+      event.preventDefault();
+  
+      if (!stripe || !elements) {
+        // Stripe.js has not loaded yet. Make sure to disable
+        // form submission until Stripe.js has loaded.
+        return;
+      }
+  
+      // Get a reference to a mounted CardElement. Elements knows how
+      // to find your CardElement because there can only ever be one of
+      // each type of element.
+      const cardElement = elements.getElement(CardElement);
+      // Use your card Element with other Stripe.js APIs
+      const {error, paymentMethod} = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+      });
+  
+      if (error) {
+        console.log('[error]', error);
+      } else {
+        console.log('[PaymentMethod]', paymentMethod);
+      }
+      //????? fix for loop?
+      let purchaseArray = [];
+      console.log(props.cartItems);
 
+      for (let element in props.cartItems) {
+        console.log(element[0].title);
+        let obj = {"title": element[0].title, "quantity": element[1]};
+        purchaseArray.push(obj);
+      }
+
+      let purchase = {"items": purchaseArray};
+
+      fetch("http://localhost:4242/create-payment-intent", {    // TODO: fix host
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(purchase)
+      })
+        .then(function(result) {
+          return result.json();
+        })
+        .then(async function(data) {
+          payWithCard(stripe, cardElement, data.clientSecret, setPaymentState);
+        });
+    };
+
+    async function payWithCard(stripe, card, clientSecret, setPaymentState) {
+      //loading();
+        let mypromise = stripe
+        .confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: card
+          }
+        })
+
+        mypromise.then(async (result) => {
+          if (result.error) {
+            setPaymentState(3);
+          }
+          else {
+            setPaymentState(2);
+          }
+        })
+      };
+/*
+      const [billingDetails, setBillingDetails] = React.useState({
+        email: "",
+        phone: "",
+        name: "",
+        mailboxNumber: ""
+      });        */
+
+      const Field = ({
+        label,
+        id,
+        type,
+        placeholder,
+        required,
+        autoComplete,
+        value,
+        onChange
+      }) => (
+        <div className="FormRow">
+          <label htmlFor={id} className="FormRowLabel">
+            {label}
+          </label>
+          <input
+            className="FormRowInput"
+            id={id}
+            type={type}
+            placeholder={placeholder}
+            required={required}
+            autoComplete={autoComplete}
+            value={value}
+            onChange={onChange}
+          />
+        </div>
+      );
+
+      const SubmitButton = ({ processing, disabled} ) => {
+
+        return <Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#f6ddf3", color: "white"}}> Pay </Button>
+}
+      
+    const CheckoutForm = () => {
+      // loading payment is int; 0 untouched, 1 loading payment, 2 payment success, 3 payment failure
+      const [paymentState, setPaymentState] = React.useState(0);
+      async function handleOnClick(e) {
+        setPaymentState(1);
+        handleSubmit(e, setPaymentState);
+      }
         if (!stripe || !elements) {
-            return ((<CircularProgress color="inherit" />));
+            return (<CircularProgress color="inherit" />);
         }
         else {
             return (
-                <form onSubmit={handleSubmit}>
-                  <CardElement />
-                  <button type="submit" disabled={!stripe}>
-                    Pay
-                  </button>
+                <form className="Form" onSubmit={handleOnClick}>
+                    <div>
+                    </div>
+                    <fieldset className="FormGroup">
+                      <Field label="Name" required={true} placeholder="Jay Grinols"></Field>
+                      <Field label="Email" type="email" required={true} placeholder="jaygrinols@gmail.com"></Field>
+                      <Field label="Phone" type="tel" required={true} placeholder="(425)-518-8372"></Field>
+                      <Field label="Mailbox" required={true} placeholder="#0"></Field>
+                      <div style={{padding: "10px"}}>
+                      <CardElement options={CARD_OPTIONS}/>
+                      </div>
+                      {
+                        paymentState===0 ? <SubmitButton processing={paymentState===1} disabled={!stripe}></SubmitButton> :
+                        paymentState===1 ? <p><CircularProgress color="inherit" /></p> :
+                        paymentState===2 ? <p>success</p> :
+                        paymentState===3 ? <p>failure</p> : null
+                      }
+                      
+                    </fieldset>
                 </form>
               );
         }
@@ -113,7 +273,7 @@ function Cart(props) {
     return (
         <div>
             <h1 style={{fontFamily: 'Nanum Pen Script', fontSize: "300%", paddingTop: "0px", paddingBottom: "0px"}}>check-out</h1>
-            <h3 style={{fontFamily: 'klee one', fontSize: "125%", color: "red"}}>NOTE: We are currently only accepting school mailbox orders from University of Puget Sound students. If you would like to request on-campus pickup, shoot us a DM on instagram. <br/>Sorry for the inconvenience! </h3>
+            <h3 style={{fontFamily: 'klee one', fontSize: "125%", color: "red", padding:"0px 5px 0px 5px"}}>NOTE: We are currently only accepting school mailbox orders from University of Puget Sound students. If you would like to request on-campus pickup, shoot us a DM on instagram. <br/>Sorry for the inconvenience! </h3>
             <Grid container style={{backgroundColor: "white", fontFamily: 'Nanum Pen Script', fontSize: "180%", margin: "auto", fontWeight: "bold", textDecoration: "underline"}} direction="row">
                 <Grid item xs={4}>
                     <p>Sticker</p>
@@ -126,7 +286,7 @@ function Cart(props) {
                 </Grid>
             </Grid>
             {cartItemsMapped}
-            <h2 style={{fontFamily: 'klee one', fontSize: "125%"}}>Total: ${props.cartItemsTotalPrice.toFixed(2)}</h2>
+            <h2 style={{fontFamily: 'klee one', fontSize: "125%"}}>Total: ${calculatePriceOfCart(props.cartItems).toFixed(2)}</h2>
             <Grid container direction="row">
                 <Grid item xs={4}>
                     <NavLink to="shop" style={{textDecoration: "none"}}><Button style={{backgroundColor: "pink", color: 'white'}} startIcon={<ArrowBackIosIcon/>}>Continue shopping</Button></NavLink>
@@ -142,8 +302,9 @@ function Cart(props) {
                 <IconButton style={{color: "white", position: "absolute", right: "0.5%", top: "0.5%"}} onClick={handleClose}>
                     <CloseIcon size="large"/>
                 </IconButton>
-                <div style={{minWidth: "300px", width: "25%", backgroundColor: "#6772e5", color: "#fff", padding: "10px"}}>
-                    <CheckoutForm></CheckoutForm>
+                <div style={{minWidth: "300px", width: "25%", backgroundColor: "#c7a2c4", color: "#fff", padding: "20px", borderRadius:"5px"}}>
+                    <CheckoutForm>
+                    </CheckoutForm>                                    
                 </div>
             </Backdrop>
         </div>

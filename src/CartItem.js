@@ -29,12 +29,12 @@ function CartItem(props) {  //props: product, quantity
                 <Grid item xs={6} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <TextField size="small" style={{width:"50px"}} value={props.quantity}/>
                     <ButtonGroup orientation="vertical">
-                    <IconButton size="small" onClick={handleIncreaseQuantity}>
-                        <AddIcon style={{width:"50%", maxWidth: "50px", color: "#c7a2c4"}}/>
-                    </IconButton>
-                    <IconButton size="small" onClick={handleDecreaseQuantity}>
-                        <RemoveIcon style={{width:"50%", maxWidth: "50px", color: "#c7a2c4"}}/>
-                    </IconButton>
+                        <IconButton size="small" onClick={handleIncreaseQuantity}>
+                            <AddIcon style={{width:"50%", maxWidth: "50px", color: "#c7a2c4"}}/>
+                        </IconButton>
+                        <IconButton size="small" onClick={handleDecreaseQuantity}>
+                            <RemoveIcon style={{width:"50%", maxWidth: "50px", color: "#c7a2c4"}}/>
+                        </IconButton>
                     </ButtonGroup>
                     <IconButton onClick={handleRemoveFromCart}>
                         <DeleteIcon style={{color: "#c7a2c4"}}/>

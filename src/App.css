@@ -64,3 +64,67 @@
     transform: rotate(360deg);
   }
 }
+
+.FormGroup {
+  margin: 0 15px 20px;
+  padding: 0;
+  border-style: none;
+  background-color: #f6ddf3;
+  will-change: opacity, transform;
+  border-radius: 4px;
+}
+
+.FormRow {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 15px;
+  border-top: 1px solid white;
+}
+
+.FormRow:first-child {
+  border-top: none;
+}
+
+.FormRowLabel {
+  width: 15%;
+  min-width: 70px;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+@keyframes void-animation-out {
+  0%,
+  to {
+    opacity: 1;
+  }
+}
+.FormRowInput:-webkit-autofill {
+  -webkit-text-fill-color: #fce883;
+  /* Hack to hide the default webkit autofill */
+  transition: background-color 100000000s;
+  animation: 1ms void-animation-out;
+}
+
+.FormRowInput {
+  font-size: 16px;
+  width: 100%;
+  padding: 14px 15px 11px 0;
+  color: grey;
+  background-color: transparent;
+  animation: 1ms void-animation-out;
+  border: none;
+}
+
+.FormRowInput::placeholder {
+  color: rgb(192, 192, 192);
+}
+
+.FormRowInput:focus{
+  outline: none;
+}
+

@@ -15,20 +15,14 @@ import { NavLink } from 'react-router-dom';
 // TODO: two images in the carousel, fix it when we have multiple items, still need to map images into carousel
 function ProductPage(props) {
     const [cartValue, updateCartValue] = React.useState(1); //NOTE: This is just the cart value when choosing how much to add to cart, not the actual current overall cart value
-    const maxCartValue = 99;
-    const minCartValue = 1;
-
-    const validCartValue = (number) => {
-        return number >= minCartValue && number <= maxCartValue;
-    };
 
     const handleIncreaseCartValue = () => {
-        if (validCartValue(cartValue+1)) {
+        if (props.validCartValue(cartValue+1)) {
             updateCartValue(cartValue+1);
         }
     }
     const handleDecreaseCartValue = () => {
-        if (validCartValue(cartValue-1)) {
+        if (props.validCartValue(cartValue-1)) {
             updateCartValue(cartValue-1);
         }
     }
