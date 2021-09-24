@@ -50,7 +50,7 @@ if ('development' == env) {
    app.use(allowCrossDomain);
 }
 
-app.post("/api/create-payment-intent", async (req, res) => {
+app.post("/api", async (req, res) => {
     //SET IT TO JUST THE MAIN DOMAIN...SUCH AS https://sticker-i96g5lkxd-jaygrinols.vercel.app
 
     const { items } = req.body;
@@ -64,10 +64,6 @@ app.post("/api/create-payment-intent", async (req, res) => {
         clientSecret: paymentIntent.client_secret
       });
 });
-
-app.get('/api', function (req, res) {
-  res.send('hello world')
-})
 
 module.exports = app;
 //app.listen(4242, () => console.log('Node server listening on port: ' + process.env.PORT));
