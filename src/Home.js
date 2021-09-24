@@ -9,8 +9,8 @@ function Home() { //IMPLEMENT TITLE BAR BELOW IMAGE DEMO material ui // SLIDE SH
         <br/>
         <Box sx={{ width: "100%", marginLeft: 'auto', marginRight: 'auto', position:'relative'}} >
           <Carousel>
-            <img alt="" style={{width:"75%"}} src="Ad1.jpeg"/>
-            <img alt="" style={{width:"75%"}} src="Ad2.png"/>
+            <img alt="" style={{width:"75%"}} src="BannerHome1.jpeg"/>
+            <img alt="" style={{width:"75%"}} src="BannerHome2.png"/>
           </Carousel>
         </Box>
       </div>

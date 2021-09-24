@@ -27,7 +27,6 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 // https://stackoverflow.com/questions/60641101/react-thumbnail-preview-when-posting-sharing-links-of-url
 function App() {
   let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 2021 Pasgals Co. All rights reserved. </p>);
-  console.log(process.env);
   const maxCartValue = 99;
   const minCartValue = 1;
 

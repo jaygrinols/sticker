@@ -6,7 +6,7 @@ app.use(express.static("public"));
 app.use(express.json());
 
 //TODO: hook up item list on front end, calculate it properly here (bring the json file over, maybe just send item names from front end)
-const productsObj = require("/src/productdata.json")["stickers"];
+const productsObj = require("./productdata.json")["stickers"];
 let products = {};
 for (let element of productsObj) {
   products[element.title] = element.price;
