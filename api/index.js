@@ -5,7 +5,6 @@ const stripe = require("stripe")(process.env.REACT_APP_STRIPE_PRIVATE_KEY);
 app.use(express.static("public"));
 app.use(express.json());
 
-//TODO: hook up item list on front end, calculate it properly here (bring the json file over, maybe just send item names from front end)
 const productsObj = require("./productdata.json")["stickers"];
 let products = {};
 for (let element of productsObj) {
@@ -18,6 +17,9 @@ const calculateProductPrice = (elem) => { // [title, quantity]  //return price i
   return price;
 };
 
+// IMPORTANT TODO: Add checks to front end request to make sure quantities and names are fine 
+// potential problem? negative quantities to reduce price (above 50 cents but still)
+// probably can use tools to tamper with https requests
 const calculateOrderAmount = items => { //items = [[title, quantity]] 
     // Replace this constant with a calculation of the order's amount
     // Calculate the order total on the server to prevent
