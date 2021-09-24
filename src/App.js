@@ -17,7 +17,7 @@ import Badge from '@mui/material/Badge';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 
 // TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
@@ -27,7 +27,7 @@ const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 // https://stackoverflow.com/questions/60641101/react-thumbnail-preview-when-posting-sharing-links-of-url
 function App() {
   let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 2021 Pasgals Co. All rights reserved. </p>);
-
+  console.log(process.env);
   const maxCartValue = 99;
   const minCartValue = 1;
 

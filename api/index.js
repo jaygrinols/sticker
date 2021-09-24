@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.REACT_APP_STRIPE_PRIVATE_KEY);
 
 app.use(express.static("public"));
 app.use(express.json());
