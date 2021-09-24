@@ -36,7 +36,18 @@ function App() {
     return number >= minCartValue && number <= maxCartValue;
   };
 
-  const [cartItems, updateCartItems] = React.useState([]);
+  const cartItemsStored = JSON.parse(localStorage.getItem("cartItems"))
+
+  const [cartItems, updateCartItems] = React.useState(
+      Array.isArray(cartItemsStored) ? cartItemsStored : []
+    );
+
+  React.useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems))
+  }, [cartItems]);
+  const handleResetCart = () => {
+    updateCartItems([]);
+  }
   const handleAddToCart = (product, number) => {
     let newItemAlreadyInCart = false;
     let newCartItems = cartItems.slice();
@@ -134,7 +145,7 @@ function App() {
         </Route>
         <Route exact path="/cart">
             <Elements stripe={stripePromise}>
-              <Cart cartItems={cartItems} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart}/>
+              <Cart cartItems={cartItems} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart} handleResetCart={handleResetCart}/>
             </Elements>
         </Route>
         {productRoutes}

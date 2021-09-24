@@ -10,6 +10,8 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import CheckIcon from '@material-ui/icons/Check';
+import Zoom from '@mui/material/Zoom';
 
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 //TODO FOR PAYMENTS:
@@ -122,8 +124,7 @@ function Cart(props) {
         }
     }
 
-    const handleSubmit = async (event, setPaymentState) => {
-      console.log("HELLO DID IT SUBMIT")
+    const handleSubmit = async (event, setPaymentState, form) => {
       // Block native form submission.
       event.preventDefault();
   
@@ -132,6 +133,9 @@ function Cart(props) {
         // form submission until Stripe.js has loaded.
         return;
       }
+      
+      let [name, email, phone, mailbox] = form;
+      console.log(name, email, phone, mailbox);
   
       // Get a reference to a mounted CardElement. Elements knows how
       // to find your CardElement because there can only ever be one of
@@ -141,55 +145,73 @@ function Cart(props) {
       const {error, paymentMethod} = await stripe.createPaymentMethod({
         type: 'card',
         card: cardElement,
+        billing_details: {
+          name: name,
+          email: email,
+          phone: phone
+        }
       });
   
       if (error) {
         console.log('[error]', error);
+        setPaymentState(3);
+        return;
       } else {
         console.log('[PaymentMethod]', paymentMethod);
       }
       //????? fix for loop?
-      let purchaseArray = [];
-      console.log(props.cartItems);
 
-      for (let element in props.cartItems) {
-        console.log(element[0].title);
-        let obj = {"title": element[0].title, "quantity": element[1]};
-        purchaseArray.push(obj);
+      let purchaseArray = [];
+      for (let i = 0; i < props.cartItems.length; i++) {
+        let quantity = props.cartItems[i][1];
+        let title = props.cartItems[i][0].title;
+        purchaseArray.push([title, quantity])
       }
 
       let purchase = {"items": purchaseArray};
-
-      fetch("http://localhost:4242/create-payment-intent", {    // TODO: fix host
+      let fetchPromise;
+      try {
+      fetchPromise = fetch("http://localhost:4242/create-payment-intent", {    // TODO: fix host
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(purchase)
-      })
-        .then(function(result) {
+      }) }
+      catch(e) {
+        console.log("fetch failed")
+        setPaymentState(4);
+        return;
+      }
+      fetchPromise.then(function(result) {
           return result.json();
         })
-        .then(async function(data) {
-          payWithCard(stripe, cardElement, data.clientSecret, setPaymentState);
-        });
+      .then(async function(data) {
+          console.log("START1: ", paymentMethod)
+          payWithCard(stripe, cardElement, data.clientSecret, setPaymentState, paymentMethod, mailbox, name);
+      });
     };
 
-    async function payWithCard(stripe, card, clientSecret, setPaymentState) {
-      //loading();
+    async function payWithCard(stripe, card, clientSecret, setPaymentState, paymentMethod, mailbox, name) {
+      console.log("START2: ", paymentMethod)
         let mypromise = stripe
-        .confirmCardPayment(clientSecret, {
-          payment_method: {
-            card: card
-          }
-        })
+        .confirmCardPayment(clientSecret, {payment_method: paymentMethod.id, shipping: {
+          name: name,
+          address: {line1: mailbox},
+        }
+});
 
         mypromise.then(async (result) => {
           if (result.error) {
             setPaymentState(3);
+            console.log(result.error);
           }
           else {
             setPaymentState(2);
+            setTimeout(function() {
+              props.handleResetCart();
+              handleClose();
+            }, 2000)
           }
         })
       };
@@ -209,7 +231,8 @@ function Cart(props) {
         required,
         autoComplete,
         value,
-        onChange
+        onChange,
+        disabled
       }) => (
         <div className="FormRow">
           <label htmlFor={id} className="FormRowLabel">
@@ -224,22 +247,46 @@ function Cart(props) {
             autoComplete={autoComplete}
             value={value}
             onChange={onChange}
+            disabled={disabled}
           />
         </div>
       );
 
-      const SubmitButton = ({ processing, disabled} ) => {
-
-        return <Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#f6ddf3", color: "white"}}> Pay </Button>
+      const SubmitButton = ({ processing, disabled, text, paymentState} ) => {
+        if (paymentState === 3) {
+          return <div><Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#8886D2", color: "red", marginBottom:"10px"}}>{text}</Button></div>
+        }
+        else {
+          return <div><Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#8886D2", color: "white", marginBottom:"10px"}}>{text}</Button></div>
+        }
 }
       
     const CheckoutForm = () => {
       // loading payment is int; 0 untouched, 1 loading payment, 2 payment success, 3 payment failure
       const [paymentState, setPaymentState] = React.useState(0);
+      const [name, onNameChange] = React.useState("");
+      const [email, onEmailChange] = React.useState("");
+      const [phone, onPhoneChange] = React.useState("");
+      const [mailbox, onMailboxChange] = React.useState("");
+
       async function handleOnClick(e) {
         setPaymentState(1);
-        handleSubmit(e, setPaymentState);
+        handleSubmit(e, setPaymentState, [name, email, phone, mailbox]);
       }
+
+      const onNameChangeH = (event) => {
+        onNameChange(event.target.value);
+      }
+      const onEmailChangeH = (event) => {
+        onEmailChange(event.target.value);
+      }
+      const onPhoneChangeH = (event) => {
+        onPhoneChange(event.target.value);
+      }
+      const onMailboxChangeH = (event) => {
+        onMailboxChange(event.target.value);
+      }
+
         if (!stripe || !elements) {
             return (<CircularProgress color="inherit" />);
         }
@@ -249,18 +296,19 @@ function Cart(props) {
                     <div>
                     </div>
                     <fieldset className="FormGroup">
-                      <Field label="Name" required={true} placeholder="Jay Grinols"></Field>
-                      <Field label="Email" type="email" required={true} placeholder="jaygrinols@gmail.com"></Field>
-                      <Field label="Phone" type="tel" required={true} placeholder="(425)-518-8372"></Field>
-                      <Field label="Mailbox" required={true} placeholder="#0"></Field>
+                      <Field label="Name" required={true} placeholder="Jay Grinols" onChange={onNameChangeH} disabled={paymentState===1 || paymentState===2}></Field>
+                      <Field label="Email" type="email" required={true} placeholder="jaygrinols@gmail.com" onChange={onEmailChangeH} disabled={paymentState===1 || paymentState===2}></Field>
+                      <Field label="Phone" type="tel" required={true} placeholder="(425)-518-8372" onChange={onPhoneChangeH} disabled={paymentState===1 || paymentState===2}></Field>
+                      <Field label="Mailbox" required={true} placeholder="#0" onChange={onMailboxChangeH} disabled={paymentState===1 || paymentState===2}></Field>
                       <div style={{padding: "10px"}}>
                       <CardElement options={CARD_OPTIONS}/>
                       </div>
                       {
-                        paymentState===0 ? <SubmitButton processing={paymentState===1} disabled={!stripe}></SubmitButton> :
+                        paymentState===0 ? <SubmitButton processing={paymentState===1} disabled={!stripe} text="pay" paymentState={paymentState}></SubmitButton> :
                         paymentState===1 ? <p><CircularProgress color="inherit" /></p> :
-                        paymentState===2 ? <p>success</p> :
-                        paymentState===3 ? <p>failure</p> : null
+                        paymentState===2 ? <Zoom in={true}><CheckIcon size="large" style={{color: "#90ee90"}}/></Zoom> :
+                        paymentState===3 ? <SubmitButton processing={paymentState===1} disabled={!stripe} text="retry" paymentState={paymentState}></SubmitButton> :
+                        paymentState===4 ? <p> Server is down, try again later </p> : null
                       }
                       
                     </fieldset>
@@ -297,6 +345,7 @@ function Cart(props) {
                 <Grid item xs={4}>
                     {checkoutButton()}
                 </Grid>
+
             </Grid>
             <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
                 <IconButton style={{color: "white", position: "absolute", right: "0.5%", top: "0.5%"}} onClick={handleClose}>
