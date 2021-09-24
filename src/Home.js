@@ -7,23 +7,12 @@ function Home() { //IMPLEMENT TITLE BAR BELOW IMAGE DEMO material ui // SLIDE SH
     return (
       <div id='home'>
         <br/>
-        <Box sx={{ width: "100%", height: 450, marginLeft: 'auto', marginRight: 'auto', position:'relative'}} >
+        <Box sx={{ width: "100%", marginLeft: 'auto', marginRight: 'auto', position:'relative'}} >
           <Carousel>
-            <img alt="" style={{width: "75%"}} src="/products/individual/img/IMG_2411.JPG"/>
-            <img alt="" style={{width: "75%"}} src="/products/individual/img/IMG_2411.JPG"/>
-            <img alt="" style={{width: "75%"}} src="/products/individual/img/IMG_2411.JPG"/>
+            <img alt="" style={{width:"75%"}} src="Ad1.jpeg"/>
+            <img alt="" style={{width:"75%"}} src="Ad2.png"/>
           </Carousel>
         </Box>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
       </div>
     );
 }
