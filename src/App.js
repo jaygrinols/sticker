@@ -17,7 +17,7 @@ import Badge from '@mui/material/Badge';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe(process.env.STRIPE_KEY);
+const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 
 // TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
