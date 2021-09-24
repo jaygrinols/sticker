@@ -295,10 +295,10 @@ function Cart(props) {
                     <div>
                     </div>
                     <fieldset className="FormGroup">
-                      <Field label="Name" required={true} placeholder="Jay Grinols" onChange={onNameChangeH} disabled={paymentState===1 || paymentState===2}></Field>
-                      <Field label="Email" type="email" required={true} placeholder="jaygrinols@gmail.com" onChange={onEmailChangeH} disabled={paymentState===1 || paymentState===2}></Field>
-                      <Field label="Phone" type="tel" required={true} placeholder="(425)-518-8372" onChange={onPhoneChangeH} disabled={paymentState===1 || paymentState===2}></Field>
-                      <Field label="Mailbox" required={true} placeholder="#0" onChange={onMailboxChangeH} disabled={paymentState===1 || paymentState===2}></Field>
+                      <Field label="Name" required={true} placeholder="First Last" onChange={onNameChangeH} disabled={paymentState===1 || paymentState===2}></Field>
+                      <Field label="Email" type="email" required={true} placeholder="pasgalsco@gmail.com" onChange={onEmailChangeH} disabled={paymentState===1 || paymentState===2}></Field>
+                      <Field label="Phone" type="tel" required={true} placeholder="(000)-000-0000" onChange={onPhoneChangeH} disabled={paymentState===1 || paymentState===2}></Field>
+                      <Field label="Mailbox" required={true} placeholder="0000" onChange={onMailboxChangeH} disabled={paymentState===1 || paymentState===2}></Field>
                       <div style={{padding: "10px"}}>
                       <CardElement options={CARD_OPTIONS}/>
                       </div>
@@ -352,7 +352,8 @@ function Cart(props) {
                 </IconButton>
                 <div style={{minWidth: "300px", width: "25%", backgroundColor: "#c7a2c4", color: "#fff", padding: "20px", borderRadius:"5px"}}>
                     <CheckoutForm>
-                    </CheckoutForm>                                    
+                    </CheckoutForm>
+                    <img alt="" src="poweredbystripe.png" style={{width: "45%"}}/>                                
                 </div>
             </Backdrop>
         </div>
