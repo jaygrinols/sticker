@@ -171,7 +171,7 @@ function Cart(props) {
       let purchase = {"items": purchaseArray};
       let fetchPromise;
       try {
-      fetchPromise = fetch("https://sticker-beta.vercel.app/api", {    // TODO: fix host
+      fetchPromise = fetch("https://pasgals.com/api", {    // TODO: fix host
         method: "POST",
         headers: {
           "Content-Type": "application/json"
