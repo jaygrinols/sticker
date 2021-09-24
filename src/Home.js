@@ -10,8 +10,8 @@ function Home() { //IMPLEMENT TITLE BAR BELOW IMAGE DEMO material ui // SLIDE SH
         <br/>
         <Box sx={{ width: "100%", marginLeft: 'auto', marginRight: 'auto', position:'relative'}} >
           <Carousel animation="fade" autoplay={true} stopAutoPlayOnHover={false} interval={7000} navButtonsAlwaysInvisible={true}>
-            <NavLink to="/shop"><img alt="" style={{width:"90%"}} src="BannerHome1.jpeg"/></NavLink>
-            <NavLink to="/shop"><img alt="" style={{width:"90%"}} src="BannerHome2.png"/></NavLink>
+            <NavLink to="/shop"><img alt="" style={{width:"80%"}} src="BannerHome1.jpeg"/></NavLink>
+            <NavLink to="/shop"><img alt="" style={{width:"80%"}} src="BannerHome2.png"/></NavLink>
           </Carousel>
         </Box>
       </div>
