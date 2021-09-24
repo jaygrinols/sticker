@@ -1,64 +1,155 @@
 {
     "stickers": [
         {
-            "title": "watermelon penguin",
-            "filename": "./products/individual/img/IMG_2402.JPG",
-            "price": "$3.00",
-            "about": "the watermelon edition of the fruit penguin collection with the fan favourite, emperor baby penguin hatching out of a...watermelon?",
-            "dimensions": "2.527 x 2.363 in."
-        },
-        {
-            "title": "orange penguin",
-            "filename": "./products/individual/img/IMG_2403.JPG",
-            "price": "$3.00",
-            "about": "the orange edition of the fruit penguin collection featuring everyone’s favourite – the baby emperor penguin! maybe the oranges keep him warm?",
-            "dimensions": "3.026 x 2.723 in."
-        },
-        {
             "title": "banana penguin",
-            "filename": "./products/individual/img/IMG_2404.JPG",
+            "filename": "/products/productwatermark/fruit penguins/wm banana penguin.png",
             "price": "$3.50",
             "about": "the banana edition of the fruit penguin collection, this time, an emperor penguin is the star! is he stuck? is he part banana? maybe you can tell me.",
             "dimensions": "3.306 x 2.869 in."
         },
         {
+            "title": "orange penguin",
+            "filename": "/products/productwatermark/fruit penguins/wm orange penguin.png",
+            "price": "$3.00",
+            "about": "the orange edition of the fruit penguin collection featuring everyone’s favourite – the baby emperor penguin! maybe the oranges keep him warm?",
+            "dimensions": "3.026 x 2.723 in."
+        },
+        {
+            "title": "watermelon penguin",
+            "filename": "/products/productwatermark/fruit penguins/wm watermelon penguin.png",
+            "price": "$3.00",
+            "about": "the watermelon edition of the fruit penguin collection with the fan favourite, emperor baby penguin hatching out of a...watermelon?",
+            "dimensions": "2.527 x 2.363 in."
+        },
+        {
             "title": "strawberry penguin",
-            "filename": "./products/individual/img/strawberry penguin.png",
+            "filename": "/products/productwatermark/fruit penguins/wm strawberry penguin.png",
             "price": "$2.00",
             "about": "About: the strawberry edition of the fruit penguin collection featuring a royal penguin (not to be confused with an emperor, nor a king penguin). watch out or he’ll whack you with his royal strawberry scepter.",
             "dimensions": "2.999 x 2.206 in."
         },
         {
+            "title": "Stacy The Stegosaurus",
+            "filename": "/products/productwatermark/dinosaurs/wm stacy he stegasaurous.png",
+            "price": "$3.00",
+            "about": "Favorite lyrics: 🎶Stacy’s mom has got it goin on🎶\nFavorite color: purple\nFavorite activity: collecting gems.",
+            "dimensions": "3.002 x 2.104 in."
+        },
+        {
+            "title": "Just Sarah",
+            "filename": "/products/productwatermark/dinosaurs/wm just sarah.png",
+            "price": "$2.00",
+            "about": "Loves to snuggle by the fireplace. Enjoys reading history books. Loves to dress up and go on fancy dates.",
+            "dimensions": "2.466 x 2.107 in."
+        },
+        {
+            "title": "Brad Brachiosaurus",
+            "filename": "/products/productwatermark/dinosaurs/wm brad bronchiasaurous.png",
+            "price": "$2.00",
+            "about": "Loves long walks on the beach. Only interested in the long term, nothing short. Enjoy studying in opp. Future physical therapist.",
+            "dimensions": "3.098 x 2.107 in."
+        },
+        {
+            "title": "Tanner the T-rex",
+            "filename": "/products/productwatermark/dinosaurs/wm tanner the t rex.png",
+            "price": "$2.00",
+            "about": "I have short arms but always available for hugging. I’m not really good at sports but this noggin is full of random facts.",
+            "dimensions": "2.489 x 2.128 in."
+        },
+        {
+            "title": "Terry the Pterodactyl",
+            "filename": "/products/productwatermark/dinosaurs/wm terry the pterodactal.png",
+            "price": "$2.00",
+            "about": "There is no room for basic b****** in here. (LDA)",
+            "dimensions": "2.935 x 1.784 in."
+        },
+        {
+            "title": "Ted The Grizzly Bear",
+            "filename": "/products/productwatermark/granola/wm ted the grizzly bear.png",
+            "price": "$2.50",
+            "about": "Has a passion for beekeeping, enjoys napping when it’s cold, and is the perfect companion for strolls in the forest.",
+            "dimensions": "3.367 x 2.498 in."
+        },
+        {
+            "title": "Nature",
+            "filename": "/products/productwatermark/granola/wm nature.png",
+            "price": "$3.50",
+            "about": "The only mountains you can climb without taking a break.",
+            "dimensions": "3.209 x 2.090 in."
+        },
+        {
+            "title": "Hiking Backpack",
+            "filename": "/products/productwatermark/granola/wm hiking backpack.png",
+            "price": "$3.00",
+            "about": "Secure the bag.",
+            "dimensions": "2.943 x 2.234 in."
+        },
+        {
+            "title": "boot",
+            "filename": "/products/productwatermark/granola/wm boot.png",
+            "price": "$3.00",
+            "about": "A blundstone boot to give you a kick in the right direction.",
+            "dimensions": "3.017 x 2.618 in."
+        },
+        {
+            "title": "Tree Slice",
+            "filename": "/products/productwatermark/granola/wm tree slice.png",
+            "price": "$2.00",
+            "about": "A slice of life.",
+            "dimensions": "2.243 x 2.220 in."
+        },
+        {
+            "title": "Peaceful Peaks",
+            "filename": "/products/productwatermark/granola/wm peaceful peaks.png",
+            "price": "$2.00",
+            "about": "Sleeping under a slither of light.",
+            "dimensions": "3 x 2.3 in."
+        },
+        {
+            "title": "Take A Hike",
+            "filename": "/products/productwatermark/granola/wm take a hike.png",
+            "price": "$2.00",
+            "about": "Get outta here",
+            "dimensions": "2.1 x 2.1 in."
+        },
+        {
+            "title": "Booing Bill",
+            "filename": "/products/productwatermark/misc/wm booing bill.png",
+            "price": "$2.00",
+            "about": "Has strong opinions.",
+            "dimensions": "1.992 x 1.717 in."
+        },
+        {
             "title": "kashiwa mochi bunny",
-            "filename": "./products/individual/img/IMG_2406.JPG",
+            "filename": "/products/productwatermark/misc/wm kashiwamochi.png",
             "price": "$3.00",
             "about": "have you heard about the bunnies making mochi on the moon? looks like we got a manufacturer error here.",
             "dimensions": "3.517 x 2.115 in."
         },
         {
             "title": "sakura mochi bunny",
-            "filename": "./products/individual/img/sakuramochi.png",
+            "filename": "/products/productwatermark/misc/wm sakuramochi.png",
             "price": "$3.00",
             "about": "have you ever had sakuramochi? maybe don’t eat this one it looks a bit squirmy.",
             "dimensions": "3.243 x 2.347 in."
         },
         {
             "title": "margarita raccoon",
-            "filename": "./products/individual/img/IMG_2407.JPG",
+            "filename": "/products/productwatermark/misc/wm margarita raccoon.png",
             "price": "$3.50",
             "about": "this raccoon is new in town and he moved into your backyard, and he’s making...margaritas?",
             "dimensions": "3.395 x 3.369 in."
         },
         {
             "title": "fishbowl sloth",
-            "filename": "./products/individual/img/IMG_2409.JPG",
+            "filename": "/products/productwatermark/misc/wm fishbowl sloth.png",
             "price": "$3.50",
             "about": "sloths may be great swimmers but this one can’t swim away from you!",
             "dimensions": "2.909 x 2.671 in."
         },
         {
             "title": "sad penguin sad penguin",
-            "filename": "./products/individual/img/sad penguin sad penguin.png",
+            "filename": "/products/productwatermark/misc/wm sad penguin sad penguin.png",
             "price": "$2.00",
             "about": "why is he sad? maybe because I accidentally made him pink.",
             "dimensions": "2.012 x 1.615 in."

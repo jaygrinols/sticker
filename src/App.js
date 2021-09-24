@@ -13,6 +13,7 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import ProductPage from './ProductPage';
 import Cart from './Cart';
 import Badge from '@mui/material/Badge';
+import About from './About'
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -139,8 +140,7 @@ function App() {
             <Shop/>
         </Route>
         <Route exact path="/about">
-            <p> About under construction </p>
-            <p> TODO: FAQ, restock times, actual about info, maybe a sticker request form</p>
+          <About/>
         </Route>
         <Route exact path="/cart">
             <Elements stripe={stripePromise}>

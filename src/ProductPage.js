@@ -40,7 +40,7 @@ function ProductPage(props) {
                 <Grid item style={{display: "block", backgroundColor: "white", float: "right", width: "50%", fontFamily: 'Nanum Pen Script', paddingTop: "5%", paddingBottom: "5%", fontSize: "200%", paddingLeft: "5%", paddingRight: "5%"}} lg={6} xs={12}>
                     <h1 style={{textAlign: "left"}}>{props.product.title}</h1>
                     <h3 style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>{props.product.price}</h3>
-                    <p style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>
+                    <p style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left", whiteSpace: "pre-line"}}>
                         <b>about: </b><span>{props.product.about}</span>
                     </p>
                     <p style={{fontFamily: "klee one", fontSize:"75%", textAlign: "left"}}>
