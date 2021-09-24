@@ -45,10 +45,10 @@ var allowCrossDomain = function(req, res, next) {   // TODO: PROPERLY SETUP THIS
     next();
 }
 var env = process.env.NODE_ENV || 'development';
-if ('development' == env) {
+//if ('development' == env) {
    // configure stuff here
    app.use(allowCrossDomain);
-}
+//}
 
 app.post("/api/create-payment-intent", async (req, res) => {
     const { items } = req.body;
