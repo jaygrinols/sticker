@@ -252,7 +252,7 @@ function Cart(props) {
 
       const SubmitButton = ({ processing, disabled, text, paymentState} ) => {
         if (paymentState === 3) {
-          return <div><Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#8886D2", color: "red", marginBottom:"10px"}}>{text}</Button></div>
+          return <div><Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#8886D2", color: "red", marginBottom:"10px"}}>{text} {calculatePriceOfCart(props.cartItems)}</Button></div>
         }
         else {
           return <div><Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#8886D2", color: "white", marginBottom:"10px"}}>{text}</Button></div>
