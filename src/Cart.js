@@ -186,16 +186,17 @@ function Cart(props) {
           return result.json();
         })
       .then(async function(data) {
-          payWithCard(stripe, cardElement, data.clientSecret, setPaymentState, paymentMethod, mailbox, name);
+          payWithCard(stripe, cardElement, data.clientSecret, setPaymentState, paymentMethod, mailbox, name, email);
       });
     };
 
-    async function payWithCard(stripe, card, clientSecret, setPaymentState, paymentMethod, mailbox, name) {
+    async function payWithCard(stripe, card, clientSecret, setPaymentState, paymentMethod, mailbox, name, email) {
         let mypromise = stripe
         .confirmCardPayment(clientSecret, {payment_method: paymentMethod.id, shipping: {
           name: name,
           address: {line1: mailbox},
-        }
+        },
+        receipt_email: email
 });
 
         mypromise.then(async (result) => {
