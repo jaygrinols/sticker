@@ -51,6 +51,10 @@ if ('development' == env) {
 }
 
 app.post("/api/create-payment-intent", async (req, res) => {
+    res.header('Access-Control-Allow-Origin', "*"); //SET IT TO JUST THE MAIN DOMAIN...SUCH AS https://sticker-i96g5lkxd-jaygrinols.vercel.app
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     const { items } = req.body;
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
