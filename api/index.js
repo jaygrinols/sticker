@@ -1,13 +1,12 @@
 const express = require('express')
 const app = express()
-const stripe = require("stripe")("sk_test_51Jbi1qBylQ0iWaN2597lH0VCBZd0fhwgpSuAeVp2tWJsbHeMGNtXNWYtIRc82k3ilFRhNmqdg6FLeTMN2UeuHDXn003fVXVIif");
-require('dotenv').config({path:'./.env'})
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 app.use(express.static("public"));
 app.use(express.json());
 
 //TODO: hook up item list on front end, calculate it properly here (bring the json file over, maybe just send item names from front end)
-const productsObj = require("./productdata.json")["stickers"];
+const productsObj = require("/src/productdata.json")["stickers"];
 let products = {};
 for (let element of productsObj) {
   products[element.title] = element.price;
