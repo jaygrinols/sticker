@@ -49,6 +49,16 @@ if ('development' == env) {
    app.use(allowCrossDomain);
 }
 
+const itemsDescription = (items) => {
+    let descriptionArr = [];
+    for (let element of items) {
+        let [name, quantity] = element;
+        let itemstr = name + " x" + quantity;
+        descriptionArr.push(itemstr);
+    }
+    return descriptionArr.join(', ');
+}
+//items is of format [[productname, quantity]]
 app.post("/api", async (req, res) => {
     //SET IT TO JUST THE MAIN DOMAIN...SUCH AS https://sticker-i96g5lkxd-jaygrinols.vercel.app
 
@@ -57,7 +67,7 @@ app.post("/api", async (req, res) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: calculateOrderAmount(items),
       currency: "usd",
-      description: JSON.stringify(items)
+      description: itemsDescription(items)
     });
     res.send({
         clientSecret: paymentIntent.client_secret
