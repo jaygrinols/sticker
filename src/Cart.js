@@ -179,7 +179,6 @@ function Cart(props) {
         body: JSON.stringify(purchase)
       }) }
       catch(e) {
-        console.log("fetch failed")
         setPaymentState(4);
         return;
       }
@@ -187,13 +186,11 @@ function Cart(props) {
           return result.json();
         })
       .then(async function(data) {
-          console.log("START1: ", paymentMethod)
           payWithCard(stripe, cardElement, data.clientSecret, setPaymentState, paymentMethod, mailbox, name);
       });
     };
 
     async function payWithCard(stripe, card, clientSecret, setPaymentState, paymentMethod, mailbox, name) {
-      console.log("START2: ", paymentMethod)
         let mypromise = stripe
         .confirmCardPayment(clientSecret, {payment_method: paymentMethod.id, shipping: {
           name: name,
@@ -209,8 +206,8 @@ function Cart(props) {
           else {
             setPaymentState(2);
             setTimeout(function() {
-              props.handleResetCart();
               handleClose();
+              props.handleResetCart();
             }, 2000)
           }
         })
