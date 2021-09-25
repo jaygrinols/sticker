@@ -21,7 +21,7 @@ const calculateProductPrice = (elem) => { // [title, quantity]  //return price i
 // validate item quantities (1 through 99), item titles, true 
 const validateItems = (items) => { //[[title, quantity]]
     for (let element of items) {
-        if ( !(element[0] <= 99 && element[0] >= 1)) {
+        if ( !(element[1] <= 99 && element[1] >= 1)) {
             return false;
         }
         let titles = products.keys();
