@@ -6,7 +6,7 @@ function Shop(props) {
     let items = require("./productdata.json")["stickers"]; //TODO: ADD UNIQUE KEYS AFFECTS PERFORMANCE
     const listItems = items.map((item, index) => {
         return (
-        <Grid item lg={2} md={4} xs={6} key={index} style={{padding:"2%"}}>
+        <Grid item md={3} xs={6} key={index} style={{padding:"2%"}}>
             <div style={{height: "100%"}}>
                 <Product src={item.filename} name={item.title} price={item.price}/>
             </div>
