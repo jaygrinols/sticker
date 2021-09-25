@@ -27,7 +27,7 @@ const validateItems = (items) => { //[[title, quantity]]
         let titles = products.keys();
         let contains = false;
         for (let title of titles) {
-            if (title.val === elem[0].val()) {
+            if (title.valueOf() === elem[0].valueOf()) {
                 contains = true;
             }
         }
