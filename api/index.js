@@ -17,6 +17,27 @@ const calculateProductPrice = (elem) => { // [title, quantity]  //return price i
   return price;
 };
 
+//TODO
+// validate item quantities (1 through 99), item titles, true 
+const validateItems = (items) => { //[[title, quantity]]
+    for (let element of items) {
+        if ( !(element[0] <= 99 && element[0] >= 1)) {
+            return false;
+        }
+        let titles = products.keys();
+        let contains = false;
+        for (let title of titles) {
+            if (title.val === elem[0].val()) {
+                contains = true;
+            }
+        }
+        if (!contains) {
+            return false;
+        }
+    }
+    return true
+}
+
 // IMPORTANT TODO: Add checks to front end request to make sure quantities and names are fine 
 // potential problem? negative quantities to reduce price (above 50 cents but still)
 // probably can use tools to tamper with https requests
@@ -65,15 +86,22 @@ app.post("/api", async (req, res) => {
     //SET IT TO JUST THE MAIN DOMAIN...SUCH AS https://sticker-i96g5lkxd-jaygrinols.vercel.app
 
     const { items } = req.body;
-    // Create a PaymentIntent with the order amount and currency
+    if (!validateItems(items)) {
+        res.status(400).send({
+            message: "items not valid"
+        })
+    }
+    else {
+            // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: calculateOrderAmount(items),
-      currency: "usd",
-      description: itemsDescription(items)
-    });
-    res.send({
-        clientSecret: paymentIntent.client_secret
+        amount: calculateOrderAmount(items),
+        currency: "usd",
+        description: itemsDescription(items)
       });
+      res.send({
+          clientSecret: paymentIntent.client_secret
+        });  
+    }
 });
 
 module.exports = app;
