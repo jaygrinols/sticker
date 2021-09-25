@@ -24,7 +24,7 @@ const validateItems = (items) => { //[[title, quantity]]
         if ( !(element[1] <= 99 && element[1] >= 1)) {
             return false;
         }
-        let titles = products.keys();
+        let titles = Object.keys(products);
         let contains = false;
         for (let title of titles) {
             if (title.valueOf() === elem[0].valueOf()) {
