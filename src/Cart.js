@@ -171,8 +171,8 @@ function Cart(props) {
       let purchase = {"items": purchaseArray};
       let fetchPromise;
       try {
-    //fetchPromise = fetch("https://pasgals.com/api", {    // TODO: fix host
-      fetchPromise = fetch("http://localhost:80/api", {    // TODO: fix host
+    fetchPromise = fetch("https://pasgals.com/api", {    // TODO: fix host
+      //fetchPromise = fetch("http://localhost:80/api", {    // TODO: fix host
         method: "POST",
         headers: {
           "Content-Type": "application/json"

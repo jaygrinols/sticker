@@ -112,5 +112,5 @@ app.post("/api", async (req, res) => {
     }
 });
 
-//module.exports = app;   // for vercel serverless functions
-app.listen(80, () => console.log('Node server listening on port: ' + 80));
+module.exports = app;   // for vercel serverless functions
+//app.listen(80, () => console.log('Node server listening on port: ' + 80));
