@@ -16,26 +16,35 @@ const calculateProductPrice = (elem) => { // [title, quantity]  //return price i
   let price = elem[1] * Number(priceString.replace(/[^0-9.-]+/g,"")) * 100;
   return price;
 };
+const maxCartQuantity = 99;
+const minCartQuantity = 1;
 
 // TODO Additional validation checks: items length, no duplicate elements in items
 const validateItems = (items) => { //[[title, quantity]]
+    if (items.length == 0) {
+        return false;
+    }
+    let titles = new Set();
     for (let element of items) {
-        if ( !(element[1] <= 99 && element[1] >= 1)) {
+        titlesData.add(element[0].normalize());
+        if ( !(element[1] <= maxCartQuantity && element[1] >= minCartQuantity)) {   // Check quantity associated to each item
             return false;
         }
-        let titles = Object.keys(products);
-        let contains = false;
-        for (let title of titles) {
+        let titlesData = Object.keys(products);
+        let existsInData = false;
+        for (let title of titlesData) {
             if (title.valueOf() === element[0].valueOf()) {
-                contains = true;
+                existsInData = true;
             }
         }
-        if (!contains) {
+        if (!existsInData) {
             return false;
         }
     }
-    return true
+    if (titles.length != items.length) return false;    //Check for duplicate types of items
+    return true;
 }
+let titles = "test";
 
 // IMPORTANT TODO: Add checks to front end request to make sure quantities and names are fine 
 // potential problem? negative quantities to reduce price (above 50 cents but still)

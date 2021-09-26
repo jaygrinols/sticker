@@ -3,7 +3,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Stack from '@mui/material/Stack'
 import './App.css';
 import { Typography } from '@mui/material';
-import Box from '@material-ui/core/Box'
 import { SocialIcon } from 'react-social-icons';
 import Home from './Home'
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
@@ -19,7 +18,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
-
 
 // TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
 // TODO: maybe add a stepper for checkout: https://mui.com/components/steppers/
@@ -66,7 +64,6 @@ function App() {
     }
   }
   const handleIncreaseQuantity = (title) => { //name of the sticker
-    console.log("is the increase running")
     let newCartItems = cartItems.slice();
     for (let i = 0; i < newCartItems.length; i++) {
       let elem = newCartItems[i];
@@ -108,7 +105,7 @@ function App() {
 
   // Define routes for each of the product's pages
   let productObjects = require("./productdata.json")["stickers"];
-  let productRoutes = productObjects.map((elem) => {
+  let productPageRoutes = productObjects.map((elem) => {
     return (
       <Route exact path={"/" + elem.title} key={elem.title + "Route"}>
         <ProductPage product={elem} handleAddToCart={handleAddToCart} validCartValue={validCartValue}/>
@@ -119,26 +116,23 @@ function App() {
   return (
     <Router>
     <div className="App">
-      <div className="hello">
-        <header>
+      <header>
         <img alt="" src="Banner_Logo.png" style={{position: "relative", width: "70%", margin: "auto"}}/>
-          <NavLink to="/cart" style={{position: "absolute", top: "3%", right: "3%", color: "#c7a2c4"}}><Badge color="secondary" badgeContent={cartItems.length}><ShoppingBasketIcon/></Badge></NavLink>
+          <NavLink to="/cart"><Badge color="secondary" badgeContent={cartItems.length} style={{position: "absolute", top: "3%", right: "3%", color: "#c7a2c4"}}><ShoppingBasketIcon/></Badge></NavLink>
           <Toolbar style={{borderTop: "5px solid #f6ddf3", borderBottom: "5px solid #f6ddf3", width: "70%", margin: "auto"}}>
-            <Stack direction="row" style={{margin: "auto", maxWidth: "100%"}} spacing={5}>
-            <NavLink to="/" style={{color: "gray", textDecoration: "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>home</Typography></NavLink>
-            <NavLink to="/shop" style={{color: "gray", textDecoration: "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>shop</Typography></NavLink>
-            <NavLink to="/about" style={{color: "gray", textDecoration: "none", display: "inline-block"}}><Typography variant="h4" style={{fontFamily: 'Nanum Pen Script'}}>about</Typography></NavLink>
+            <Stack direction="row" style={{margin: "auto", color: "gray", textDecoration: "none", display: "inline-block", fontFamily: 'Nanum Pen Script'}} spacing={5}>
+              <NavLink to="/"><Typography variant="h4" style={{color: "gray", textDecoration: "none", display: "inline-block", fontFamily: 'Nanum Pen Script'}}>home</Typography></NavLink>
+              <NavLink to="/shop"><Typography variant="h4" style={{color: "gray", textDecoration: "none", display: "inline-block", fontFamily: 'Nanum Pen Script'}}>shop</Typography></NavLink>
+              <NavLink to="/about"><Typography variant="h4" style={{color: "gray", textDecoration: "none", display: "inline-block", fontFamily: 'Nanum Pen Script'}}>about</Typography></NavLink>
             </Stack>
           </Toolbar>
-        </header>
-      </div>
-        <div style={{minHeight: "100%"}}>
-          <Switch>
+      </header>
+        <Switch>
           <Route exact path="/">
-              <Home/>
+            <Home/>
           </Route>
           <Route exact path="/shop">
-              <Shop/>
+            <Shop/>
           </Route>
           <Route exact path="/about">
             <About/>
@@ -148,14 +142,11 @@ function App() {
                 <Cart cartItems={cartItems} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart} handleResetCart={handleResetCart}/>
               </Elements>
           </Route>
-          {productRoutes}
-          </Switch>
-        </div>      
-      <div className='bottom'>
-      <Box>
-      <img alt="" src="Logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "12%", minWidth: "90px"}}/>
-      <SocialIcon url="https://www.instagram.com/pasgals.co/" style={{position: "fixed", right:"2%", bottom:"3%"}} network="instagram" />
-      </Box>
+          {productPageRoutes}
+        </Switch>
+      <div>
+        <img alt="" src="Logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "12%", minWidth: "90px"}}/>
+        <SocialIcon url="https://www.instagram.com/pasgals.co/" style={{position: "fixed", right:"2%", bottom:"3%"}} network="instagram" />
       </div>
       <footer>
         <br/>
