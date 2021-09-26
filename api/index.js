@@ -17,8 +17,7 @@ const calculateProductPrice = (elem) => { // [title, quantity]  //return price i
   return price;
 };
 
-//TODO
-// validate item quantities (1 through 99), item titles, true 
+// TODO Additional validation checks: items length, no duplicate elements in items
 const validateItems = (items) => { //[[title, quantity]]
     for (let element of items) {
         if ( !(element[1] <= 99 && element[1] >= 1)) {

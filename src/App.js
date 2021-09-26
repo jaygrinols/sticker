@@ -132,23 +132,25 @@ function App() {
           </Toolbar>
         </header>
       </div>
-        <Switch>
-        <Route exact path="/">
-            <Home/>
-        </Route>
-        <Route exact path="/shop">
-            <Shop/>
-        </Route>
-        <Route exact path="/about">
-          <About/>
-        </Route>
-        <Route exact path="/cart">
-            <Elements stripe={stripePromise}>
-              <Cart cartItems={cartItems} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart} handleResetCart={handleResetCart}/>
-            </Elements>
-        </Route>
-        {productRoutes}
-        </Switch>      
+        <div style={{minHeight: "100%"}}>
+          <Switch>
+          <Route exact path="/">
+              <Home/>
+          </Route>
+          <Route exact path="/shop">
+              <Shop/>
+          </Route>
+          <Route exact path="/about">
+            <About/>
+          </Route>
+          <Route exact path="/cart">
+              <Elements stripe={stripePromise}>
+                <Cart cartItems={cartItems} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart} handleResetCart={handleResetCart}/>
+              </Elements>
+          </Route>
+          {productRoutes}
+          </Switch>
+        </div>      
       <div className='bottom'>
       <Box>
       <img alt="" src="Logo1.png" style={{position: "fixed", left: "2%", bottom: "3%", width: "12%", minWidth: "90px"}}/>

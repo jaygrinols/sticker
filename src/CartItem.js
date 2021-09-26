@@ -6,6 +6,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@mui/material/TextField';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import { NavLink } from 'react-router-dom';
 
 function CartItem(props) {  //props: product, quantity
     const handleIncreaseQuantity = () => {
@@ -21,7 +22,7 @@ function CartItem(props) {  //props: product, quantity
         <div style={{backgroundColor: "white"}}>
             <Grid container direction="row">
                 <Grid item xs={4} style={{display: "flex", alignItems: "center", justifyContent: "center", fontFamily: 'Nanum Pen Script', fontSize: "125%"}}>
-                    <img alt="" src={props.product.filename} style={{minWidth: "40%", width: "40%"}}></img>
+                    <NavLink to={props.product.title}><img alt="" src={props.product.filename} style={{minWidth: "40%", width: "40%"}}></img></NavLink>
                 </Grid>
                 <Grid item xs={2} style={{display: "flex", alignItems: "center", justifyContent: "center", fontFamily: 'Nanum Pen Script', fontSize: "125%"}}>
                     <p style={{fontFamily: "klee one", fontSize:"90%"}}>{props.product.price}</p>
