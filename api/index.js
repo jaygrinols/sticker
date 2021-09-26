@@ -28,6 +28,7 @@ const validateItems = (items) => { //[[title, quantity]]
         titles.add(element[0].normalize()); //Add to check for duplicates later
         if ( !(element[1] <= maxCartQuantity && element[1] >= minCartQuantity)) {   // Check quantity associated to each item
             console.log("Quantity check failed: " + element);
+            throw "Quantity check thrown error";
             return false;
         }
         let titlesData = Object.keys(products);
@@ -39,11 +40,13 @@ const validateItems = (items) => { //[[title, quantity]]
         }
         if (!existsInData) {
             console.log("Name doesn't exist in product listing failure: " + element);
+            throw "Name doesn't exist thrown error";
             return false;
         }
     }
     if (titles.length != items.length) {
         console.log("Set check failed, titles set: " + titles + ", Original items list: " + items);
+        throw "Set check failed thrown error";
         return false;    //Check for duplicate types of items
     }
     return true;
