@@ -26,7 +26,7 @@ const validateItems = (items) => { //[[title, quantity]]
     }
     let titles = new Set();
     for (let element of items) {
-        titlesData.add(element[0].normalize());
+        titles.add(element[0].normalize());
         if ( !(element[1] <= maxCartQuantity && element[1] >= minCartQuantity)) {   // Check quantity associated to each item
             return false;
         }
