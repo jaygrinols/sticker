@@ -19,15 +19,15 @@ const calculateProductPrice = (elem) => { // [title, quantity]  //return price i
 const maxCartQuantity = 99;
 const minCartQuantity = 1;
 
-// TODO Additional validation checks: items length, no duplicate elements in items
 const validateItems = (items) => { //[[title, quantity]]
     if (items.length == 0) {
         return false;
     }
     let titles = new Set();
     for (let element of items) {
-        titles.add(element[0].normalize());
+        titles.add(element[0].normalize()); //Add to check for duplicates later
         if ( !(element[1] <= maxCartQuantity && element[1] >= minCartQuantity)) {   // Check quantity associated to each item
+            console.log("Quantity check failed: " + element);
             return false;
         }
         let titlesData = Object.keys(products);
@@ -38,13 +38,16 @@ const validateItems = (items) => { //[[title, quantity]]
             }
         }
         if (!existsInData) {
+            console.log("Name doesn't exist in product listing failure: " + element);
             return false;
         }
     }
-    if (titles.length != items.length) return false;    //Check for duplicate types of items
+    if (titles.length != items.length) {
+        console.log("Set check failed, titles set: " + titles + ", Original items list: " + items);
+        return false;    //Check for duplicate types of items
+    }
     return true;
 }
-let titles = "test";
 
 // IMPORTANT TODO: Add checks to front end request to make sure quantities and names are fine 
 // potential problem? negative quantities to reduce price (above 50 cents but still)
@@ -100,17 +103,17 @@ app.post("/api", async (req, res) => {
         })
     }
     else {
-            // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
-        amount: calculateOrderAmount(items),
-        currency: "usd",
-        description: itemsDescription(items)
-      });
-      res.send({
-          clientSecret: paymentIntent.client_secret
+        // Create a PaymentIntent with the order amount and currency
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: calculateOrderAmount(items),
+            currency: "usd",
+            description: itemsDescription(items)
+        });
+        res.send({
+            clientSecret: paymentIntent.client_secret
         });  
     }
 });
 
-module.exports = app;
-//app.listen(4242, () => console.log('Node server listening on port: ' + process.env.PORT));
+module.exports = app;   // for vercel serverless functions
+//app.listen(process.env.PORT, () => console.log('Node server listening on port: ' + process.env.PORT));
