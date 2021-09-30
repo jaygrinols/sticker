@@ -12,20 +12,30 @@ function Home(props) { //IMPLEMENT TITLE BAR BELOW IMAGE DEMO material ui // SLI
   let items = require("./productdata.json")["stickers"];
 
   //WARNING: CHOOSE A RANDOM NAME FOR HOMEPAGE BANNER: THIS WILL BE DEPRECATED IN THE FUTURE WHEN DIRECTORY STRUCTURE IS CHANGED
+  //SAME WARNING: CHOOSE A RANDOM HALLOWEEN NAME
+  //TODO: implement random halloween name
   let dinosaurNames = [];
+  let halloweenNames = [];
+
   for (let product of items) {
     if (product.filename.startsWith("/products/productwatermark/dinosaurs")) {
       dinosaurNames.push("/" + product.title);
     }
+    else if (product.filename.startsWith("/products/productwatermark/halloween")) {
+      halloweenNames.push("/" + product.title);
+    }
   }
-  let randomIndex = Math.floor(dinosaurNames.length * Math.random())
-  let randomDinosaurName = dinosaurNames[randomIndex];
+  let randomDinosaurIndex = Math.floor(dinosaurNames.length * Math.random());
+  let randomDinosaurName = dinosaurNames[randomDinosaurIndex];
+  let randomHalloweenIndex = Math.floor(halloweenNames.length * Math.random());
+  let randomHalloweenName = halloweenNames[randomHalloweenIndex];
+
     return (
       <div id='home'>
         <br/>
         <Box sx={{ width: "100%", marginLeft: 'auto', marginRight: 'auto', position:'relative'}} >
           <Carousel animation="fade" autoplay={true} stopAutoPlayOnHover={false} interval={7000} navButtonsAlwaysInvisible={true}>
-            <NavLink to="/Booing Bill"><img alt="" style={{width:"80%"}} src="BannerHome1.jpeg"/></NavLink>
+            <NavLink to={randomHalloweenName}><img alt="" style={{width:"80%"}} src="BannerHome1.jpeg"/></NavLink>
             <NavLink to={randomDinosaurName}><img alt="" style={{width:"80%"}} src="BannerHome2.png"/></NavLink>
           </Carousel>
         </Box>

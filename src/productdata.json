@@ -114,10 +114,17 @@
         },
         {
             "title": "Booing Bill",
-            "filename": "/products/productwatermark/misc/wm booing bill.png",
+            "filename": "/products/productwatermark/halloween/wm booing bill.png",
             "price": "$2.00",
             "about": "Has strong opinions.",
             "dimensions": "1.992 x 1.717 in."
+        },
+        {
+            "title": "Binx the Cat",
+            "filename": "/products/productwatermark/halloween/wm binx the cat.png",
+            "price": "$2.00",
+            "about": "Am I lucky or do I produce bad luck? Find out for yourself.",
+            "dimensions": "3.003 x 1.793 in."
         },
         {
             "title": "kashiwa mochi bunny",
