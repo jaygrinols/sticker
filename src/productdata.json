@@ -127,6 +127,34 @@
             "dimensions": "3.003 x 1.793 in."
         },
         {
+            "title": "Bobby Boogie",
+            "filename": "/products/productwatermark/halloween/wm bobby boogie.png",
+            "price": "$2.00",
+            "about": "Down to dance 24/7.",
+            "dimensions": "1.728 x 1.491 in."
+        },
+        {
+            "title": "Pasgals pumpkin",
+            "filename": "/products/productwatermark/halloween/wm pasgals pumpkin.png",
+            "price": "$2.00",
+            "about": "generic pumpkin with logo",
+            "dimensions": "1.506 x 1.484 in."
+        },
+        {
+            "title": "Napping Ned",
+            "filename": "/products/productwatermark/halloween/wm napping ned.png",
+            "price": "$2.00",
+            "about": "Loves sleeping everywhere. If my body can fit in it, I will sleep in it.",
+            "dimensions": "1.978 x 1.960 in."
+        },
+        {
+            "title": "Totally Ghoul Gerry",
+            "filename": "/products/productwatermark/halloween/wm totally ghoul gerry.png",
+            "price": "$2.00",
+            "about": "Gerry loves nothing but positive vibez.",
+            "dimensions": "1.756 x 1.571 in."
+        },
+        {
             "title": "kashiwa mochi bunny",
             "filename": "/products/productwatermark/misc/wm kashiwamochi.png",
             "price": "$3.00",

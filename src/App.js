@@ -14,6 +14,8 @@ import Cart from './Cart';
 import Badge from '@mui/material/Badge';
 import About from './About'
 
+//Possible TODO: Get notified when shipping becomes available
+
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
