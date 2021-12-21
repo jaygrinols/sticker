@@ -1,3 +1,11 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+Description: 
+Top level of application defining routes to home page, shop page, product page, about page, cart page...
+*/
+
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar'
 import Stack from '@mui/material/Stack'
@@ -13,42 +21,44 @@ import ProductPage from './ProductPage';
 import Cart from './Cart';
 import Badge from '@mui/material/Badge';
 import About from './About'
-
-//Possible TODO: Get notified when shipping becomes available
-
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY); // Recommended to load this at the top level of your application to improve performance.
+/* 
+Additional features I would like to work on when I have time...
+// TODO: Form to get notified when shipping becomes available
+// TODO: Maybe add a stepper for a more fleshed out checkout page: https://mui.com/components/steppers/
+// TODO: Set proper image in image preview for imessage, discord, etc. https://stackoverflow.com/questions/60641101/react-thumbnail-preview-when-posting-sharing-links-of-url
+// TODO: Having some form of product IDs instead of referencing the name directly, not a very scalable approach. Probably will switch this when migrating to a database.
+*/
 
-// TODO: Add footer so that it's possible to scroll the bottom icons to the very bottom
-// TODO: maybe add a stepper for checkout: https://mui.com/components/steppers/
-// TODO: badge for cart in corner: https://mui.com/components/badges/
-// TODO: IMAGE PREVIEW FOR IMESSAGE DISCORD ETC
-// https://stackoverflow.com/questions/60641101/react-thumbnail-preview-when-posting-sharing-links-of-url
 function App() {
   let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 2021 pasgals co. All rights reserved. </p>);
+  
+  // Function to make sure cart quantity for an item doesn't go over or under required amounts
   const maxCartValue = 99;
   const minCartValue = 1;
-
-  //make sure cart quantity for an item doesn't go over or under required amounts
-  const validCartValue = (number) => {  //warning: defined somewhere else as well TODO cleanup helper functions
+  const validCartValue = (number) => {
     return number >= minCartValue && number <= maxCartValue;
   };
 
+  // A fix for adding the cartItems to localstorage to persist across browser refreshes
   const cartItemsStored = JSON.parse(localStorage.getItem("cartItems"))
-
   const [cartItems, updateCartItems] = React.useState(
       Array.isArray(cartItemsStored) ? cartItemsStored : []
     );
-
   React.useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
   }, [cartItems]);
-  const handleResetCart = () => {
+  
+  // Some functions to handle cart state
+  // Reset the list of items in the cart
+  const handleResetCart = () => { 
     updateCartItems([]);
   }
-  const handleAddToCart = (product, number) => {
+  // Add the item to the cart for the first time via the product page
+  const handleAddToCart = (product, number) => {  
     let newItemAlreadyInCart = false;
     let newCartItems = cartItems.slice();
     for (const elem of newCartItems) {
@@ -65,6 +75,7 @@ function App() {
       updateCartItems(newCartItems);
     }
   }
+  // Increase the quantity of the item via the cart page
   const handleIncreaseQuantity = (title) => { //name of the sticker
     let newCartItems = cartItems.slice();
     for (let i = 0; i < newCartItems.length; i++) {
@@ -79,6 +90,7 @@ function App() {
       }
     }
   };
+  // Decrease the quantity of the item via the cart page
   const handleDecreaseQuantity = (title) => {
     let newCartItems = cartItems.slice();
     for (let i = 0; i < newCartItems.length; i++) {
@@ -93,6 +105,7 @@ function App() {
       } 
     }
   };
+  // Remove the item from the cart via the cart page
   const handleRemoveFromCart = (title) => {
     let newCartItems = cartItems.slice();
     for (let i = 0; i < newCartItems.length; i++) {
@@ -105,7 +118,7 @@ function App() {
     }
   };
 
-  // Define routes for each of the product's pages
+  // Create routes for each of the product's pages
   let productObjects = require("./productdata.json")["stickers"];
   let productPageRoutes = productObjects.map((elem) => {
     return (

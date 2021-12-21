@@ -1,3 +1,11 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+Description: 
+Page that contains cart features. Checkout is implemented in this file, and is accessed from the cart page.
+*/
+
 import React from 'react';
 import Button from "@material-ui/core/Button";
 import Grid from '@material-ui/core/Grid';

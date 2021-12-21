@@ -1,3 +1,11 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+Description: 
+Blueprint for a cart page item to be used within the cart page.
+*/
+
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton'
@@ -46,5 +54,4 @@ function CartItem(props) {  //props: product, quantity
         </div>
     );
 }
-
 export default CartItem;

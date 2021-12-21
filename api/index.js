@@ -1,37 +1,47 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+Description: 
+Backend that handles validating purchases and processing the payment.
+*/
+
 const express = require('express')
 const app = express()
 const stripe = require("stripe")(process.env.REACT_APP_STRIPE_PRIVATE_KEY);
-
 app.use(express.static("public"));
 app.use(express.json());
 
-const productsObj = require("./productdata.json")["stickers"];
-let products = {};
+const productsObj = require("./productdata.json")["stickers"]; // Unfortunately not letting me pull directly from the productdata.json file in /src. Haven't figured out a fix for that.
+let products = {};  // Map of product names -> price string (example: "$3.50")
 for (let element of productsObj) {
   products[element.title] = element.price;
 }
 
-const calculateProductPrice = (elem) => { // [title, quantity]  //return price in cents
+// Function that returns product price in cents
+const calculateProductPrice = (elem) => { // elem = [title, quantity]
   let priceString = products[elem[0]];
   let price = elem[1] * Number(priceString.replace(/[^0-9.-]+/g,"")) * 100;
   return price;
 };
+
+// Function to validate purchase request
 const maxCartQuantity = 99;
 const minCartQuantity = 1;
-
-const validateItems = (items) => { //[[title, quantity]]
-    if (items.length == 0) {
+const validateItems = (items) => { // items = [[titleA, quantityA], ...]
+    if (items.length == 0) {    // Can't make a no item purchase
         return false;
     }
-    const titles = new Set();
+    const titles = new Set(); // Set to check for duplicate items. (for example, avoids problem of having [titleA, 99] twice, resulting in a 198 total quantity of titleA)
     for (let element of items) {
-        titles.add(element[0].normalize()); //Add to check for duplicates later
-        if ( !(element[1] <= maxCartQuantity && element[1] >= minCartQuantity)) {   // Check quantity associated to each item
+        titles.add(element[0].normalize()); // Add to set for duplicate check
+        if ( !(element[1] <= maxCartQuantity && element[1] >= minCartQuantity)) { // Check whether quantity of item is valid.
             return false;
         }
-        let titlesData = Object.keys(products);
+
+        let titlesData = Object.keys(products); // TODO: Can be optimized by keeping this as a set outside of this function.
         let existsInData = false;
-        for (let title of titlesData) {
+        for (let title of titlesData) { // Checks that title is a real product. 
             if (title.valueOf() === element[0].valueOf()) {
                 existsInData = true;
             }
@@ -41,46 +51,24 @@ const validateItems = (items) => { //[[title, quantity]]
         }
     }
     if (titles.size != items.length) {
-        return false;    //Check for duplicate types of items
+        return false;    // Check for duplicate types of items
     }
     return true;
 }
 
-// IMPORTANT TODO: Add checks to front end request to make sure quantities and names are fine 
-// potential problem? negative quantities to reduce price (above 50 cents but still)
-// probably can use tools to tamper with https requests
-const calculateOrderAmount = items => { //items = [[title, quantity]] 
-    // Replace this constant with a calculation of the order's amount
-    // Calculate the order total on the server to prevent
-    // people from directly manipulating the amount on the client
-    // Calculate the price in CENTS
+// Function to calculate the total amount to send to Stripe (in cents)
+const calculateOrderAmount = items => { //items = [[titleA, quantityA], ...]
+    // Calculate the order total on the backend to prevent people from manipulating the amount on the frontend client
     let price = 0;
 
     for (let element of items) {
-      console.log(element);
       price += calculateProductPrice(element);
     }
-    console.log(price);
     return price;
 };  
-//https://stackoverflow.com/questions/18642828/origin-origin-is-not-allowed-by-access-control-allow-origin/18643011#18643011
-//https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-//https://github.com/expressjs/express/wiki/Migrating-from-3.x-to-4.x
-//https://github.com/tyler-johnson/stripe-meteor/issues/37
 
-var allowCrossDomain = function(req, res, next) {   // TODO: PROPERLY SETUP THIS HOSTING
-    res.header('Access-Control-Allow-Origin', "*"); //SET IT TO JUST THE MAIN DOMAIN...SUCH AS https://sticker-i96g5lkxd-jaygrinols.vercel.app
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-}
-var env = process.env.NODE_ENV || 'development';
-if ('development' == env) {
-   // configure stuff here
-   app.use(allowCrossDomain);
-}
-
-const itemsDescription = (items) => {
+// Function to create an "order string" for the stripe dashboard. (to make orders readable on the dashboard for the sticker creators)
+const itemsDescription = (items) => { //items = [[titleA, quantityA], ...]
     let descriptionArr = [];
     for (let element of items) {
         let [name, quantity] = element;
@@ -89,10 +77,8 @@ const itemsDescription = (items) => {
     }
     return descriptionArr.join(', ');
 }
-//items is of format [[productname, quantity]]
-app.post("/api", async (req, res) => {
-    //SET IT TO JUST THE MAIN DOMAIN...SUCH AS https://sticker-i96g5lkxd-jaygrinols.vercel.app
 
+app.post("/api", async (req, res) => {
     const { items } = req.body;
     if (!validateItems(items)) {
         res.status(400).send({
@@ -112,5 +98,20 @@ app.post("/api", async (req, res) => {
     }
 });
 
+// Some Vercel settings... --------------------------------------------------------------------------------------------------------------------
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+}
+var env = process.env.NODE_ENV || 'development';
+if ('development' == env) {
+   // configure stuff here
+   app.use(allowCrossDomain);
+}
 module.exports = app;   // for vercel serverless functions
+// Some Vercel settings... --------------------------------------------------------------------------------------------------------------------
+
+// To use as a normal express app: 
 //app.listen(80, () => console.log('Node server listening on port: ' + 80));

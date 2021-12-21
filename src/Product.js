@@ -1,3 +1,11 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+Description:
+Blueprint for thumbnail components displayed in the shop page.
+*/
+
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { NavLink } from 'react-router-dom'

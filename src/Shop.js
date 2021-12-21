@@ -1,3 +1,11 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+Description: 
+Page that showcases thumbnails of all stickers offered.
+*/
+
 import React from 'react';
 import Product from './Product';
 import Grid from '@material-ui/core/Grid';
@@ -21,5 +29,4 @@ function Shop(props) {
         </div>
     );
 }
-
 export default Shop;

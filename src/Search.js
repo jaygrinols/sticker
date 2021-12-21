@@ -1,8 +1,14 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+*/
+
+// Note: Search feature, currently not implemented nor used. Most of this is just copied code towards the beginning of implementation.
+
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-
-
 
 export default function Search() {
     const Search = styled('div')(({ theme }) => ({

@@ -1,3 +1,11 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+Description: 
+Blueprint of a product page that is generally accessed from the shop page, provides a closer look at a specific product.
+*/
+
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -8,11 +16,6 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import TextField from '@mui/material/TextField';
 import { NavLink } from 'react-router-dom';
 
-//https://www.npmjs.com/package/react-material-ui-carousel
-
-// Props: elem: sticker data object
-//TODO: ADD a carousel, figure out how to not show arrows when only one item... might have to render the image without the carousel if only one image for the sticker
-// TODO: two images in the carousel, fix it when we have multiple items, still need to map images into carousel
 function ProductPage(props) {
     const [cartValue, updateCartValue] = React.useState(1); //NOTE: This is just the cart value when choosing how much to add to cart, not the actual current overall cart value
 

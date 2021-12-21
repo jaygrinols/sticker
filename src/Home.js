@@ -1,3 +1,11 @@
+/*
+Created by: 
+Jay Grinols (UW Seattle, Computer Science)
+https://pasgals.com
+Description: 
+Landing page.
+*/
+
 import React from 'react';
 import './App.css';
 import Box from '@material-ui/core/Box'
@@ -42,5 +50,4 @@ function Home(props) { //IMPLEMENT TITLE BAR BELOW IMAGE DEMO material ui // SLI
       </div>
     );
 }
-
 export default Home;
