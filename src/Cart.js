@@ -197,17 +197,17 @@ function Cart(props) {
       name: name, // Shows up on dashboard
       address: {line1: mailbox},  // Shows up on dashboard, currently just a mailbox number. This is the thing to edit when we change from school mailboxes -> actual addresses
     },
-    receipt_email: email
+    receipt_email: email // Sets where to send the automated receipt
     });
 
     mypromise.then(async (result) => {
-      if (result.error) {
+      if (result.error) { // payment states are: 3 -> payment failure and option to retry
         setPaymentState(3);
         console.log(result.error);
       }
-      else {
+      else { // payment states are: 2 -> payment success
         setPaymentState(2);
-        setTimeout(function() {
+        setTimeout(function() { // After payment succeeds, automatically loses the checkout popup after 2 seconds so that the customer can actually see that their payment succeeded.
           handleClose();
           props.handleResetCart();
         }, 2000)
