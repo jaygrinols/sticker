@@ -5,6 +5,13 @@ https://pasgals.com
 Description: 
 Top level of application defining routes to home page, shop page, product page, about page, cart page...
 */
+/* 
+Additional features I would like to work on when I have time...
+// TODO: Form to get notified when shipping becomes available
+// TODO: Maybe add a stepper for a more fleshed out checkout page: https://mui.com/components/steppers/
+// TODO: Set proper image in image preview for imessage, discord, etc. https://stackoverflow.com/questions/60641101/react-thumbnail-preview-when-posting-sharing-links-of-url
+// TODO: Having some form of product IDs instead of referencing the name directly, not a very scalable approach. Probably will switch this when migrating to a database.
+*/
 
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar'
@@ -24,14 +31,8 @@ import About from './About'
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
+// https://stripe.com/docs/stripe-js/react#elements-provider
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY); // Recommended to load this at the top level of your application to improve performance.
-/* 
-Additional features I would like to work on when I have time...
-// TODO: Form to get notified when shipping becomes available
-// TODO: Maybe add a stepper for a more fleshed out checkout page: https://mui.com/components/steppers/
-// TODO: Set proper image in image preview for imessage, discord, etc. https://stackoverflow.com/questions/60641101/react-thumbnail-preview-when-posting-sharing-links-of-url
-// TODO: Having some form of product IDs instead of referencing the name directly, not a very scalable approach. Probably will switch this when migrating to a database.
-*/
 
 function App() {
   let rights = (<p style={{fontFamily: 'Nanum Pen Script', fontSize:"150%"}}>© 2021 pasgals co. All rights reserved. </p>);
