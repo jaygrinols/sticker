@@ -12,8 +12,13 @@ import { NavLink } from 'react-router-dom'
 import './App.css'
 
 // Props: elem:sticker data object  
+/* 
+Props: 
+src -> String of path to given product image
+name -> String of given product name
+price -> String of given product price in USD
+*/
 
-// Component for each product tile on the shop page.
 function Product(props) {
     return (
         <NavLink to={"/" + props.name}>

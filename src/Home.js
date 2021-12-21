@@ -16,6 +16,10 @@ import { NavLink } from 'react-router-dom';
 //https://github.com/Learus/react-material-ui-carousel/issues/88
 //https://stackoverflow.com/questions/42615556/how-to-preload-images-in-react-js
 
+/* 
+Props: N/A
+*/
+
 function Home(props) { //IMPLEMENT TITLE BAR BELOW IMAGE DEMO material ui // SLIDE SHOW FOR FEATURED INSTEAD OF IMAGELIST
   let items = require("./productdata.json")["stickers"];
 

@@ -10,6 +10,10 @@ import React from 'react';
 import Product from './Product';
 import Grid from '@material-ui/core/Grid';
 
+/* 
+Props: N/A
+*/
+
 function Shop(props) {
     let items = require("./productdata.json")["stickers"]; //TODO: ADD UNIQUE KEYS AFFECTS PERFORMANCE
     const listItems = items.map((item, index) => {

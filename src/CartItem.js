@@ -16,7 +16,16 @@ import TextField from '@mui/material/TextField';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { NavLink } from 'react-router-dom';
 
-function CartItem(props) {  //props: product, quantity
+/* 
+Props: 
+product -> Object representing one product containing fields {title: (sticker name), filename: (path to image), price: (USD string), about: (description), dimensions: (physical sticker dimensions)}
+quantity -> Quantity of this product as a number
+handleIncreaseQuantity() -> Passed down function to increase the current quantity of the item in cart
+handleDecreaseQuantity() -> Passed down function to decrease the current quantity of the item in cart
+handleRemoveFromCart() -> Passed down function to entirely remove an item in cart
+*/
+
+function CartItem(props) {  
     const handleIncreaseQuantity = () => {
         props.handleIncreaseQuantity(props.product.title);
     };

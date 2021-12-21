@@ -9,6 +9,11 @@ Page that talks about the creators and information about the business.
 import React from 'react';
 import "./App.css";
 import Paper from '@material-ui/core/Paper';
+
+/* 
+Props: N/A
+*/
+
 function About() {
     return (
         <div style={{fontFamily: "Klee One", paddingLeft: "5%", paddingRight:"5%"}}>

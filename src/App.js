@@ -44,9 +44,10 @@ function App() {
   };
 
   // A fix for adding the cartItems to localstorage to persist across browser refreshes
+  // https://joaoforja.com/blog/how-to-persist-state-after-a-page-refresh-in-react-using-local-storage/
   const cartItemsStored = JSON.parse(localStorage.getItem("cartItems"))
-  const [cartItems, updateCartItems] = React.useState(
-      Array.isArray(cartItemsStored) ? cartItemsStored : []
+  const [cartItems, updateCartItems] = React.useState(  // cartItems: [[product: {title, filename, price, ...}, quantity], ...]
+      Array.isArray(cartItemsStored) ? cartItemsStored : [] // If we have cart items in local storage, use that. Otherwise, initialize with an empty list
     );
   React.useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
@@ -58,24 +59,24 @@ function App() {
     updateCartItems([]);
   }
   // Add the item to the cart for the first time via the product page
-  const handleAddToCart = (product, number) => {  
+  const handleAddToCart = (product, number) => {  // TODO: room for more efficiency by using sets and dictionaries, should be a relatively simple change.
     let newItemAlreadyInCart = false;
     let newCartItems = cartItems.slice();
     for (const elem of newCartItems) {
       let productNameInCart = elem[0]["title"];
-      if (productNameInCart.valueOf() === product["title"].valueOf()) {
+      if (productNameInCart.valueOf() === product["title"].valueOf()) { // Update the current entry.
         elem[1] = number;
         updateCartItems(newCartItems);
         newItemAlreadyInCart = true;
         break;
       }
     }
-    if (!newItemAlreadyInCart) {
+    if (!newItemAlreadyInCart) {  // Add the item as a new entry if it wasn't an entry before.
       newCartItems = newCartItems.concat([[product, number]]);
       updateCartItems(newCartItems);
     }
   }
-  // Increase the quantity of the item via the cart page
+  // Increase the quantity of the item via the cart page (passed down)
   const handleIncreaseQuantity = (title) => { //name of the sticker
     let newCartItems = cartItems.slice();
     for (let i = 0; i < newCartItems.length; i++) {
@@ -90,7 +91,7 @@ function App() {
       }
     }
   };
-  // Decrease the quantity of the item via the cart page
+  // Decrease the quantity of the item via the cart page (passed down)
   const handleDecreaseQuantity = (title) => {
     let newCartItems = cartItems.slice();
     for (let i = 0; i < newCartItems.length; i++) {
