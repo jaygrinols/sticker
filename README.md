@@ -14,4 +14,5 @@ Pasgals Co. is a small business based out of the University of Puget Sound in Ta
 
 ## Environment Variables
 REACT_APP_STRIPE_PRIVATE_KEY (Stripe developer private key)
+
 REACT_APP_STRIPE_PUBLIC_KEY (Stripe developer public key)
