@@ -21,11 +21,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CheckIcon from '@material-ui/icons/Check';
 import Zoom from '@mui/material/Zoom';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-//full payment code: 
-//https://stripe.com/docs/payments/integration-builder
-//create a payment intent when pressing "checkout" button from cart? (not in backdrop)
-//request Full Name, phone number, email, mailbox number, card info
 
+// Some styling options for the Card field of our checkout popup.
 const CARD_OPTIONS = {
   iconStyle: "solid",
   style: {
@@ -61,8 +58,8 @@ handleResetCart() -> Passed down function to clear out the cart
 */
 
 function Cart(props) {
-  const stripe = useStripe();
-  const elements = useElements();
+  const stripe = useStripe(); // https://stripe.com/docs/stripe-js/react#usestripe-hook
+  const elements = useElements(); // https://stripe.com/docs/stripe-js/react#useelements-hook
 
   // TODO: Refactor, these wrapped function definitions are redundant, as they are only used inside of the child component CartItem.----------
   const handleIncreaseQuantity = (title) => {
@@ -76,27 +73,28 @@ function Cart(props) {
   }
   // TODO: Refactor, these wrapped function definitions are redundant, as they are only used inside of the child component CartItem.----------
 
-  const [open, setOpen] = React.useState(false);  // Represents whether the checkout page is open or not (since it's a "popup" on a backdrop)
+  // Represents whether the checkout page is open or not (since it's a "popup" on a backdrop)
+  const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
-    //TODO: Clear cart if payment was successful (payment state 2)
-    //setPaymentState(0);
   };
   const handleOpen = () => {
     setOpen(true);
   };
 
+  // A list of CartItems components, mapped from our internal list of items in the cart
   const cartItemsMapped = props.cartItems.map((elem) => {   // elem = [product: {title, filename, price, ...}, quantity]
       return (
         <CartItem product={elem[0]} quantity={elem[1]} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} handleRemoveFromCart={handleRemoveFromCart}/>
       );
   });
 
+  // Functions to calculate the total price of items in the user's cart
   const calculateProductPrice = (elem) => { // elem = [product: {title, filename, price, ...}, quantity]
     let priceString = elem[0].price;
     let price = elem[1] * Number(priceString.replace(/[^0-9.-]+/g,""));
     return price; // Price in USD decimal (for example 3.5 = $3.50)
-  };    
+  };
   const calculatePriceOfCart = (cartItems) => {
     let price = 0.0;
     for (const elem of cartItems) {
@@ -106,34 +104,22 @@ function Cart(props) {
     return price; // Price in USD decimal (for example 3.5 = $3.50)
   }
 
-    //UI STUFF ------------------------------------------------------------------------------------
-    /*
-    var orderComplete = function() {
-        setPaymentState(2);
-      };
-      // Show the customer the error from Stripe if their card fails to charge
-      var showError = function() {
-        setPaymentState(3);
-      };
-      // Show a spinner on payment submission
-      var loading = function() {
-        setPaymentState(1);
-      };*/
-    //UI STUFF END --------------------------------------------------------------------------------
-
+  // Button on cart page to access the checkout popup
   const checkoutButton = () => {
-      if (props.cartItems.length === 0) { // Gray out button and make unclickable if there's nothing to check out
-          return (
-              <LoadingButton disabled style={{backgroundColor: "grey", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Check-out</LoadingButton>
-          );
-      }
-      else {  // Normal checkout button function
-          return (
-              <LoadingButton onClick={handleOpen} disabled={false} style={{backgroundColor: "pink", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Check-out</LoadingButton>
-          );
-      }
+    if (props.cartItems.length === 0) { // Gray out button and make unclickable if there's nothing to check out
+      return (
+        <LoadingButton disabled style={{backgroundColor: "grey", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Check-out</LoadingButton>
+      );
+    }
+    else {  // Normal checkout button function
+      return (
+        <LoadingButton onClick={handleOpen} disabled={false} style={{backgroundColor: "pink", color: 'white'}} endIcon={<ArrowForwardIosIcon/>}>Check-out</LoadingButton>
+      );
+    }
   }
 
+  // Much of this is copied from the Stripe documentation.
+  // https://stripe.com/docs/payments/integration-builder
   const handleSubmit = async (event, setPaymentState, form) => {
     // Block native form submission.
     event.preventDefault();
@@ -144,44 +130,47 @@ function Cart(props) {
       return;
     }
     
+    // Unpack the fields of our form unrelated to the credit card itself
     let [name, email, phone, mailbox] = form;
-    console.log(name, email, phone, mailbox);
 
     // Get a reference to a mounted CardElement. Elements knows how
     // to find your CardElement because there can only ever be one of
     // each type of element.
     const cardElement = elements.getElement(CardElement);
     // Use your card Element with other Stripe.js APIs
+
+    // Create a payment method 
     const {error, paymentMethod} = await stripe.createPaymentMethod({
       type: 'card',
-      card: cardElement,
-      billing_details: {
+      card: cardElement,  // From the separate card component provided by Stripe
+      billing_details: {  // These details are unpacked from our form elements outside of stripe
         name: name,
         email: email,
         phone: phone
       }
     });
 
-    if (error) {
+    if (error) {  // Something went wrong: update our paymentState to allow a retry.
       console.log('[error]', error);
-      setPaymentState(3);
+      setPaymentState(3); // payment states are: 0 untouched, 1 loading payment after submission, 2 payment success, 3 payment failure and option to retry
       return;
-    } else {
+    } 
+    else {
       console.log('[PaymentMethod]', paymentMethod);
     }
 
-    let purchaseArray = [];
+    let purchaseArray = []; // Format is [[Product Name/Title, Quantity], ...]
     for (let i = 0; i < props.cartItems.length; i++) {
       let quantity = props.cartItems[i][1];
       let title = props.cartItems[i][0].title;
       purchaseArray.push([title, quantity])
     }
 
-    let purchase = {"items": purchaseArray};
-    let fetchPromise;
+    let purchase = {"items": purchaseArray};  // Prepared for our POST request
+    let fetchPromise; // Contains our client secret: https://stripe.com/docs/payments/payment-intents#passing-to-client
     try {
       fetchPromise = fetch("https://pasgals.com/api", { // For general use
-      //fetchPromise = fetch("http://localhost:80/api", {    // For local hosting
+      //fetchPromise = fetch("http://localhost:80/api", { // For local hosting
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -190,23 +179,23 @@ function Cart(props) {
       })
     }
     catch(e) {
-      setPaymentState(4); // Something major (maybe the server is down)
+      setPaymentState(4); // Some major unaccounted issue (maybe the backend is down)
       return;
     }
-    fetchPromise.then(function(result) {
-        return result.json();
-      })
-    .then(async function(data) {
-        payWithCard(stripe, cardElement, data.clientSecret, setPaymentState, paymentMethod, mailbox, name, email);
-    });
 
+    fetchPromise.then(function(result) {
+      return result.json();
+    })
+    .then(async function(data) {
+      payWithCard(stripe, cardElement, data.clientSecret, setPaymentState, paymentMethod, mailbox, name, email);
+    });
   };
 
   async function payWithCard(stripe, card, clientSecret, setPaymentState, paymentMethod, mailbox, name, email) {
     let mypromise = stripe
     .confirmCardPayment(clientSecret, {payment_method: paymentMethod.id, shipping: {
-      name: name,
-      address: {line1: mailbox},
+      name: name, // Shows up on dashboard
+      address: {line1: mailbox},  // Shows up on dashboard, currently just a mailbox number. This is the thing to edit when we change from school mailboxes -> actual addresses
     },
     receipt_email: email
     });
@@ -225,15 +214,8 @@ function Cart(props) {
       }
     })
   };
-    /*
-      const [billingDetails, setBillingDetails] = React.useState({
-        email: "",
-        phone: "",
-        name: "",
-        mailboxNumber: ""
-      });        
-    */
-
+  
+  // Blueprint for each Field of our html <fieldset> element on the checkout popup
   const Field = ({
     label,
     id,
@@ -263,16 +245,19 @@ function Cart(props) {
     </div>
   );
 
+  // Payment submission button on the checkout popup. 
   const SubmitButton = ({ processing, disabled, text, paymentState} ) => {
-    if (paymentState === 3) {
+    // payment states are: 0 untouched, 1 loading payment after submission, 2 payment success, 3 payment failure and option to retry
+    if (paymentState === 3) { // Red retry text if payment failed
       return <div><Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#8886D2", color: "red", marginBottom:"10px"}}>{text}</Button></div>
     }
-    else {
+    else { // Shows amount to pay on the button
       let newText = text + " $" + calculatePriceOfCart(props.cartItems).toFixed(2);
       return <div><Button type="submit" disabled={processing || disabled} style={{backgroundColor: "#8886D2", color: "white", marginBottom:"10px"}}>{newText}</Button></div>
     }
   }
-      
+  
+  // Form on checkout popup
   const CheckoutForm = () => {
     // payment states are: 0 untouched, 1 loading payment after submission, 2 payment success, 3 payment failure and option to retry
     const [paymentState, setPaymentState] = React.useState(0);
@@ -281,9 +266,10 @@ function Cart(props) {
     const [phone, onPhoneChange] = React.useState("");
     const [mailbox, onMailboxChange] = React.useState("");
 
+    // Handling form submission (basically payment submission)
     async function handleOnClick(e) {
       setPaymentState(1);
-      handleSubmit(e, setPaymentState, [name, email, phone, mailbox]);
+      handleSubmit(e, setPaymentState, [name, email, phone, mailbox]); // Submission of payment (Lots of Stripe code)
     }
     
     // Keep track of states of each field unrelated to credit card

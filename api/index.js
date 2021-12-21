@@ -79,14 +79,15 @@ const itemsDescription = (items) => { //items = [[titleA, quantityA], ...]
 }
 
 app.post("/api", async (req, res) => {
-    const { items } = req.body;
-    if (!validateItems(items)) {
+    const { items } = req.body; // Format of req.body: {items: [[Product Name/Title, Quantity], ...]}
+    if (!validateItems(items)) { // Format of items: [[Product Name/Title, Quantity], ...]
         res.status(400).send({
             message: "items not valid"
         })
     }
     else {
         // Create a PaymentIntent with the order amount and currency
+        // https://stripe.com/docs/payments/payment-intents
         const paymentIntent = await stripe.paymentIntents.create({
             amount: calculateOrderAmount(items),
             currency: "usd",
@@ -94,6 +95,12 @@ app.post("/api", async (req, res) => {
         });
         res.send({
             clientSecret: paymentIntent.client_secret
+            /*
+            https://stripe.com/docs/payments/payment-intents#passing-to-client
+            The PaymentIntent contains a client secret, a key that’s unique to the individual PaymentIntent. 
+            On the client side of your application, Stripe.js uses the client secret as a parameter when invoking functions 
+            (such as stripe.confirmCardPayment or stripe.handleCardAction) to complete the payment.
+            */
         });  
     }
 });
