@@ -9,26 +9,23 @@ Landing page.
 import React from 'react';
 import './App.css';
 import Box from '@material-ui/core/Box'
-import Carousel from 'react-material-ui-carousel' //https://www.npmjs.com/package/react-material-ui-carousel
+import Carousel from 'react-material-ui-carousel' // Community made component: https://www.npmjs.com/package/react-material-ui-carousel
 import { NavLink } from 'react-router-dom';
 
-//Potentially contribute to the carousel project? 
-//https://github.com/Learus/react-material-ui-carousel/issues/88
-//https://stackoverflow.com/questions/42615556/how-to-preload-images-in-react-js
+// Would like to contribute to the Carousel in the future, to preload images in the carousel.
+// https://github.com/Learus/react-material-ui-carousel/issues/88
+// https://stackoverflow.com/questions/42615556/how-to-preload-images-in-react-js
 
 /* 
 Props: N/A
 */
 
-function Home(props) { //IMPLEMENT TITLE BAR BELOW IMAGE DEMO material ui // SLIDE SHOW FOR FEATURED INSTEAD OF IMAGELIST
+function Home(props) { // Currently contains two banner advertisements on the home page in the carousel.
   let items = require("./productdata.json")["stickers"];
 
-  //WARNING: CHOOSE A RANDOM NAME FOR HOMEPAGE BANNER: THIS WILL BE DEPRECATED IN THE FUTURE WHEN DIRECTORY STRUCTURE IS CHANGED
-  //SAME WARNING: CHOOSE A RANDOM HALLOWEEN NAME
-  //TODO: implement random halloween name
-  let dinosaurNames = [];
+  // Takes user to a random dinosaur sticker product page when clicking on the dinosaur ad, and a random halloween sticker product page when clicking on the halloween ad
+  let dinosaurNames = []; 
   let halloweenNames = [];
-
   for (let product of items) {
     if (product.filename.startsWith("/products/productwatermark/dinosaurs")) {
       dinosaurNames.push("/" + product.title);
